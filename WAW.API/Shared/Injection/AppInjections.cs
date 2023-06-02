@@ -1,5 +1,6 @@
 using WAW.API.Auth.Injection;
 using WAW.API.Chat.Injection;
+using WAW.API.Cvs.Injection;
 using WAW.API.Employers.Injection;
 using WAW.API.Job.Injection;
 using WAW.API.Shared.Domain.Repositories;
@@ -13,6 +14,7 @@ public static class AppInjections {
     CompanyInjections.Register(services);
     JobInjections.Register(services);
     ChatInjections.Register(services);
+    CvInjections.Register(services);
 
     services.AddScoped<IUnitOfWork, UnitOfWork>();
   }
