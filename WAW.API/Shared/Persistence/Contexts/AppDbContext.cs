@@ -4,6 +4,7 @@ using WAW.API.Employers.Domain.Models;
 using WAW.API.Job.Domain.Models;
 using WAW.API.Chat.Domain.Models;
 using WAW.API.Shared.Extensions;
+using WAW.API.Subscriptions.Domain.Models;
 
 namespace WAW.API.Shared.Persistence.Contexts;
 
@@ -17,6 +18,7 @@ public class AppDbContext : DbContext {
   private DbSet<UserEducation>? userEducation;
   private DbSet<UserExperience>? userExperience;
   private DbSet<UserProject>? userProject;
+  private DbSet<Subscription>? subscriptions;
 
   public DbSet<Offer> Offers {
     get => GetContext(offers);
@@ -61,6 +63,11 @@ public class AppDbContext : DbContext {
   public DbSet<UserProject> UserProject {
     get => GetContext(userProject);
     set => userProject = value;
+  }
+
+  public DbSet<Subscription> Subscriptions {
+    get => GetContext(subscriptions);
+    set => subscriptions = value;
   }
 
   public AppDbContext(DbContextOptions options) : base(options) {}
@@ -156,6 +163,15 @@ public class AppDbContext : DbContext {
     companyEntity.Property(p => p.Name).IsRequired().HasMaxLength(100);
     companyEntity.Property(p => p.Address).HasMaxLength(256);
     companyEntity.Property(p => p.Email).IsRequired().HasMaxLength(256);
+
+    var subscriptionEntity = builder.Entity<Subscription>();
+    subscriptionEntity.ToTable("Subscriptions");
+    subscriptionEntity.HasKey(p => p.Id);
+    subscriptionEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+    subscriptionEntity.Property(p => p.NamePlan).IsRequired().HasMaxLength(100);
+    subscriptionEntity.Property(p => p.StartDate).IsRequired();
+    subscriptionEntity.Property(p => p.EndDate).IsRequired();
+    subscriptionEntity.Property(p=> p.Description).IsRequired().HasMaxLength(100);
 
     builder.UseSnakeCase();
   }
