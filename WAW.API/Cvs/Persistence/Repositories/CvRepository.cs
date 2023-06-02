@@ -11,7 +11,6 @@ public class CvRepository : BaseRepository, ICvRepository {
   public async Task<IEnumerable<Cv>> ListAll() {
     return await context.Cvs.ToListAsync();
   }
-
   public async Task Add(Cv cv) {
     await context.Cvs.AddAsync(cv);
   }
