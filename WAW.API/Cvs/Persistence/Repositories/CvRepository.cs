@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using WAW.API.Cvs.Domain.Models;
 using WAW.API.Cvs.Domain.Repositories;
 using WAW.API.Shared.Persistence.Contexts;
 using WAW.API.Shared.Persistence.Repositories;

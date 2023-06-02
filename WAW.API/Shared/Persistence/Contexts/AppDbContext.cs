@@ -40,7 +40,7 @@ public class AppDbContext : DbContext {
     set => chatRooms = value;
   }
   
-  public DbSet<Cv> Cv {
+  public DbSet<Cv> Cvs {
     get => GetContext(cvs);
     set => cvs = value;
   }
@@ -85,7 +85,7 @@ public class AppDbContext : DbContext {
     chatRoomEntity.HasMany(p => p.Messages).WithOne(p => p.ChatRoom).HasForeignKey(p => p.ChatRoomId);
     
     var cvEntity = builder.Entity<Cv>();
-    cvEntity.ToTable("Cv");
+    cvEntity.ToTable("Cvs");
     cvEntity.HasKey(p => p.Id);
     cvEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
     cvEntity.Property(p => p.Title).IsRequired().HasMaxLength(256);
