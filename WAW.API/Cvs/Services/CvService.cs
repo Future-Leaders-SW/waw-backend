@@ -33,7 +33,8 @@ public class CvService : ICvService {
     var current = await repository.FindById(id);
     if (current == null) return new CvResponse("Cv not found");
 
-    cv.CopyTo(current);
+    current.Title = cv.Title;
+    current.Data = cv.Data;
 
     try {
       repository.Update(current);
@@ -43,6 +44,7 @@ public class CvService : ICvService {
       return new CvResponse($"An error occurred while updating the cv: {e.Message}");
     }
   }
+
 
   public async Task<CvResponse> Delete(long id) {
     var current = await repository.FindById(id);

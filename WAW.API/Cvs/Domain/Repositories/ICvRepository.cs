@@ -5,7 +5,7 @@ namespace WAW.API.Cvs.Domain.Repositories;
 public interface ICvRepository {
   Task<IEnumerable<Cv>> ListAll();
 
-  Task Add(Cv offer);
+  Task Add(Cv cv);
 
   Task<Cv?> FindById(long id);
 

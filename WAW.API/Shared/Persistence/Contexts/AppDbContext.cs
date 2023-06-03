@@ -91,7 +91,6 @@ public class AppDbContext : DbContext {
     cvEntity.Property(p => p.Title).IsRequired().HasMaxLength(256);
     cvEntity.Property(p => p.Data).IsRequired();
     
-
     var messageEntity = builder.Entity<Message>();
     messageEntity.ToTable("Message");
     messageEntity.HasKey(p => p.Id);

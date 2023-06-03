@@ -38,10 +38,22 @@ public class CvController : ControllerBase {
   [ProducesResponseType(500)]
   [SwaggerResponse(200, "The cv was created successfully", typeof(CvResource))]
   [SwaggerResponse(400, "The cv data is invalid")]
-  public async Task<IActionResult> Post([FromBody] CvRequest resource) {
-    if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
+  public async Task<IActionResult> Post(IFormFile? file)
+  {
+    if (file == null || file.Length == 0) return BadRequest("No file uploaded");
 
-    var cv = mapper.Map<CvRequest, Cv>(resource);
+    // Convert the file to a byte array
+    using var memoryStream = new MemoryStream();
+    await file.CopyToAsync(memoryStream);
+
+    // Create a new Cv
+    var cv = new Cv
+    {
+      Title = file.FileName,
+      Data = memoryStream.ToArray()
+    };
+
+    // Use your CvService to create the new Cv
     var result = await service.Create(cv);
     return result.ToResponse<CvResource>(this, mapper);
   }
