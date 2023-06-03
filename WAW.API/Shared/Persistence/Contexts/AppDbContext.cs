@@ -3,6 +3,7 @@ using WAW.API.Auth.Domain.Models;
 using WAW.API.Employers.Domain.Models;
 using WAW.API.Job.Domain.Models;
 using WAW.API.Chat.Domain.Models;
+using WAW.API.Cvs.Domain.Models;
 using WAW.API.Shared.Extensions;
 
 namespace WAW.API.Shared.Persistence.Contexts;
@@ -12,6 +13,7 @@ public class AppDbContext : DbContext {
   private DbSet<User>? users;
   private DbSet<Company>? companies;
   private DbSet<ChatRoom>? chatRooms;
+  private DbSet<Cv>? cvs;
   private DbSet<Message>? messages;
   private DbSet<ExternalImage>? images;
   private DbSet<UserEducation>? userEducation;
@@ -36,6 +38,11 @@ public class AppDbContext : DbContext {
   public DbSet<ChatRoom> ChatRooms {
     get => GetContext(chatRooms);
     set => chatRooms = value;
+  }
+  
+  public DbSet<Cv> Cvs {
+    get => GetContext(cvs);
+    set => cvs = value;
   }
 
   public DbSet<Message> Messages {
@@ -76,7 +83,14 @@ public class AppDbContext : DbContext {
     chatRoomEntity.Property(p => p.LastUpdateDate).IsRequired();
     chatRoomEntity.HasMany(p => p.Messages).WithOne(p => p.ChatRoom).HasForeignKey(p => p.ChatRoomId);
     chatRoomEntity.HasMany(p => p.Messages).WithOne(p => p.ChatRoom).HasForeignKey(p => p.ChatRoomId);
-
+    
+    var cvEntity = builder.Entity<Cv>();
+    cvEntity.ToTable("Cvs");
+    cvEntity.HasKey(p => p.Id);
+    cvEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+    cvEntity.Property(p => p.Title).IsRequired().HasMaxLength(256);
+    cvEntity.Property(p => p.Data).IsRequired();
+    
     var messageEntity = builder.Entity<Message>();
     messageEntity.ToTable("Message");
     messageEntity.HasKey(p => p.Id);
