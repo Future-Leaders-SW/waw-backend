@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WAW.API.Shared.Persistence.Contexts;
 
@@ -10,9 +11,10 @@ using WAW.API.Shared.Persistence.Contexts;
 namespace WAW.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230603203654_PlanSubscription")]
+    partial class PlanSubscription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -405,13 +407,10 @@ namespace WAW.API.Migrations
                         .HasColumnType("varchar(2048)")
                         .HasColumnName("image");
 
-                    b.Property<decimal>("MaxSalary")
-                        .HasColumnType("decimal(65,30)")
-                        .HasColumnName("max_salary");
-
-                    b.Property<decimal>("MinSalary")
-                        .HasColumnType("decimal(65,30)")
-                        .HasColumnName("min_salary");
+                    b.Property<string>("SalaryRange")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("salary_range");
 
                     b.Property<bool>("Status")
                         .HasColumnType("tinyint(1)")

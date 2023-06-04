@@ -8,15 +8,15 @@ public class SubscriptionResource {
   public long Id { get; set; }
 
   [SwaggerSchema("Subscription planName", Nullable = false)]
-  public string NamePlan { get; set; }
-
-  [SwaggerSchema("Subscription start date", Nullable = false)]
-  public DateTime StartDate { get; set; }
-
-  [SwaggerSchema("Subscription end date", Nullable = false)]
-  public DateTime EndDate { get; set; }
+  public string NamePlan { get; set; } = null!;
 
   [SwaggerSchema("Subscription description", Nullable = false)]
   public string Description { get; set; } = string.Empty;
+
+  [SwaggerSchema("Subscription duration", Nullable = false)]
+  public int Duration { get; set; }
+
+  [SwaggerSchema("Subscription cost", Nullable = false)]
+  public float Cost { get; set; }
 
 }
