@@ -8,7 +8,10 @@ public abstract class BaseResponse<T> {
   private string Message { get; set; }
   private T? Resource { get; set; }
   
-  
+  public T? GetResource()
+  {
+    return Resource;
+  }
 
   protected BaseResponse(string message) {
     Success = false;

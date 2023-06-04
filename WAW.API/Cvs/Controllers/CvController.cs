@@ -43,7 +43,19 @@ public class CvController : ControllerBase {
     return cv.ToResponse<CvResource>(this, mapper);
   }
   
-  
+  [HttpGet("{id}/file")]
+  [SwaggerResponse(200, "The Cv file was retrieved successfully", typeof(FileContentResult))]
+  [SwaggerResponse(404, "The Cv file was not found")]
+  public async Task<IActionResult> GetFile(long id)
+  {
+    var cvResponse = await service.GetById(id);
+    var cv = cvResponse.GetResource();
+    if (cv == null || cv.Data == null)
+    {
+      return NotFound("The Cv file was not found");
+    }
+    return File(cv.Data, "application/pdf", cv.Title);
+  }
 
 
   [HttpPost]
