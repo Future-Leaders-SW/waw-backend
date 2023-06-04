@@ -5,6 +5,7 @@ using Swashbuckle.AspNetCore.Annotations;
 using WAW.API.Auth.Authorization.Attributes;
 using WAW.API.Cvs.Domain.Models;
 using WAW.API.Cvs.Domain.Services;
+using WAW.API.Cvs.Domain.Services.Communication;
 using WAW.API.Cvs.Resources;
 using WAW.API.Shared.Extensions;
 
@@ -31,6 +32,19 @@ public class CvController : ControllerBase {
     var cvs = await service.ListAll();
     return mapper.Map<IEnumerable<Cv>, IEnumerable<CvResource>>(cvs);
   }
+  
+  [HttpGet("{id}")]
+  [ProducesResponseType(typeof(CvResource), 200)]
+  [SwaggerResponse(200, "The Cv was retrieved successfully", typeof(CvResource))]
+  [SwaggerResponse(404, "The Cv was not found")]
+  public async Task<IActionResult> Get(long id)
+  {
+    var cv = await service.GetById(id);
+    return cv.ToResponse<CvResource>(this, mapper);
+  }
+  
+  
+
 
   [HttpPost]
   [ProducesResponseType(typeof(CvResource), 200)]
@@ -38,26 +52,25 @@ public class CvController : ControllerBase {
   [ProducesResponseType(500)]
   [SwaggerResponse(200, "The cv was created successfully", typeof(CvResource))]
   [SwaggerResponse(400, "The cv data is invalid")]
-  public async Task<IActionResult> Post(IFormFile? file)
+  public async Task<IActionResult> Post([FromForm]CvCreateModel cvCreateModel)
   {
-    if (file == null || file.Length == 0) return BadRequest("No file uploaded");
-
-    // Convert the file to a byte array
+    if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
     using var memoryStream = new MemoryStream();
-    await file.CopyToAsync(memoryStream);
+    await cvCreateModel.Data.CopyToAsync(memoryStream);
 
-    // Create a new Cv
+    if(memoryStream.Length == 0) return BadRequest("Uploaded file is empty");
+
     var cv = new Cv
     {
-      Title = file.FileName,
-      Data = memoryStream.ToArray()
+      Title = cvCreateModel.Title,
+      Data = memoryStream.ToArray(),
+      UserId = cvCreateModel.UserId
     };
 
-    // Use your CvService to create the new Cv
     var result = await service.Create(cv);
     return result.ToResponse<CvResource>(this, mapper);
   }
-
+  
   [HttpPut("{id:int}")]
   [ProducesResponseType(typeof(CvResource), 200)]
   [ProducesResponseType(typeof(List<string>), 400)]

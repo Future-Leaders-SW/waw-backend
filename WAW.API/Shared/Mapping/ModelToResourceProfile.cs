@@ -14,5 +14,6 @@ public class ModelToResourceProfile : Profile {
     JobModelToResourceProfile.Register(this);
     ChatModelToResourceProfile.Register(this);
     CvModelToResourceProfile.Register(this);
+    DetailResourceToCvProfile.Register(this);
   }
 }

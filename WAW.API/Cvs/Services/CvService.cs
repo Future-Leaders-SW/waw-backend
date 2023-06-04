@@ -18,6 +18,16 @@ public class CvService : ICvService {
   public Task<IEnumerable<Cv>> ListAll() {
     return repository.ListAll();
   }
+  
+  public async Task<CvResponse> GetById(long id) {
+    try {
+      var cv = await repository.FindById(id);
+      await unitOfWork.Complete();
+      return new CvResponse(cv);
+    } catch (Exception e) {
+      return new CvResponse($"An error occurred while retrieving the cv: {e.Message}");
+    }
+  }
 
   public async Task<CvResponse> Create(Cv cv) {
     try {

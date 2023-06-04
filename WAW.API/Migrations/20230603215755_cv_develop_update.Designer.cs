@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WAW.API.Shared.Persistence.Contexts;
 
@@ -10,9 +11,10 @@ using WAW.API.Shared.Persistence.Contexts;
 namespace WAW.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230603215755_cv_develop_update")]
+    partial class cv_develop_update
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -133,6 +135,10 @@ namespace WAW.API.Migrations
                     b.HasIndex("CoverId")
                         .IsUnique()
                         .HasDatabaseName("i_x_users_cover_id");
+
+                    b.HasIndex("CvId")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_users_cv_id");
 
                     b.HasIndex("PictureId")
                         .IsUnique()
@@ -384,12 +390,15 @@ namespace WAW.API.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("user_id");
 
+                    b.Property<long?>("UserId2")
+                        .HasColumnType("bigint")
+                        .HasColumnName("user_id2");
+
                     b.HasKey("Id")
                         .HasName("p_k_cvs");
 
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasDatabaseName("i_x_cvs_user_id");
+                    b.HasIndex("UserId2")
+                        .HasDatabaseName("i_x_cvs_user_id2");
 
                     b.ToTable("cvs", (string)null);
                 });
@@ -486,12 +495,20 @@ namespace WAW.API.Migrations
                         .HasForeignKey("WAW.API.Auth.Domain.Models.User", "CoverId")
                         .HasConstraintName("f_k_users_images_cover_id");
 
+                    b.HasOne("WAW.API.Cvs.Domain.Models.Cv", "Cv")
+                        .WithOne()
+                        .HasForeignKey("WAW.API.Auth.Domain.Models.User", "CvId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("f_k_users__cvs_cv_id");
+
                     b.HasOne("WAW.API.Auth.Domain.Models.ExternalImage", "Picture")
                         .WithOne()
                         .HasForeignKey("WAW.API.Auth.Domain.Models.User", "PictureId")
                         .HasConstraintName("f_k_users_images_picture_id");
 
                     b.Navigation("Cover");
+
+                    b.Navigation("Cv");
 
                     b.Navigation("Picture");
                 });
@@ -584,20 +601,15 @@ namespace WAW.API.Migrations
             modelBuilder.Entity("WAW.API.Cvs.Domain.Models.Cv", b =>
                 {
                     b.HasOne("WAW.API.Auth.Domain.Models.User", "User")
-                        .WithOne("Cv")
-                        .HasForeignKey("WAW.API.Cvs.Domain.Models.Cv", "UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("f_k_cvs_users_user_id");
+                        .WithMany()
+                        .HasForeignKey("UserId2")
+                        .HasConstraintName("f_k_cvs_users_user_id2");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("WAW.API.Auth.Domain.Models.User", b =>
                 {
-                    b.Navigation("Cv")
-                        .IsRequired();
-
                     b.Navigation("Education");
 
                     b.Navigation("Experience");

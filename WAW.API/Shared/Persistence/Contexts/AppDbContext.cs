@@ -123,6 +123,8 @@ public class AppDbContext : DbContext {
     userEntity.HasMany(p => p.Projects).WithOne(p => p.User).HasForeignKey(p => p.UserId).IsRequired();
     userEntity.HasOne(p => p.Cover).WithOne().HasForeignKey<User>(p => p.CoverId);
     userEntity.HasOne(p => p.Picture).WithOne().HasForeignKey<User>(p => p.PictureId);
+    userEntity.HasOne(p => p.Cv).WithOne(p=>p.User).HasForeignKey<Cv>(p => p.UserId).OnDelete(DeleteBehavior.Cascade);
+
 
     var educationEntity = builder.Entity<UserEducation>();
     educationEntity.ToTable("UserEducation");
