@@ -4,7 +4,7 @@
 
 namespace WAW.API.Migrations
 {
-    public partial class cv_develop_update : Migration
+    public partial class cv_fix : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -21,35 +21,17 @@ namespace WAW.API.Migrations
                 nullable: false,
                 defaultValue: 0L);
 
-            migrationBuilder.AddColumn<long>(
-                name: "user_id2",
-                table: "cvs",
-                type: "bigint",
-                nullable: true);
-
             migrationBuilder.CreateIndex(
-                name: "i_x_users_cv_id",
-                table: "users",
-                column: "cv_id",
+                name: "i_x_cvs_user_id",
+                table: "cvs",
+                column: "user_id",
                 unique: true);
 
-            migrationBuilder.CreateIndex(
-                name: "i_x_cvs_user_id2",
-                table: "cvs",
-                column: "user_id2");
-
             migrationBuilder.AddForeignKey(
-                name: "f_k_cvs_users_user_id2",
+                name: "f_k_cvs_users_user_id",
                 table: "cvs",
-                column: "user_id2",
+                column: "user_id",
                 principalTable: "users",
-                principalColumn: "id");
-
-            migrationBuilder.AddForeignKey(
-                name: "f_k_users__cvs_cv_id",
-                table: "users",
-                column: "cv_id",
-                principalTable: "cvs",
                 principalColumn: "id",
                 onDelete: ReferentialAction.Cascade);
         }
@@ -57,19 +39,11 @@ namespace WAW.API.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "f_k_cvs_users_user_id2",
+                name: "f_k_cvs_users_user_id",
                 table: "cvs");
 
-            migrationBuilder.DropForeignKey(
-                name: "f_k_users__cvs_cv_id",
-                table: "users");
-
             migrationBuilder.DropIndex(
-                name: "i_x_users_cv_id",
-                table: "users");
-
-            migrationBuilder.DropIndex(
-                name: "i_x_cvs_user_id2",
+                name: "i_x_cvs_user_id",
                 table: "cvs");
 
             migrationBuilder.DropColumn(
@@ -78,10 +52,6 @@ namespace WAW.API.Migrations
 
             migrationBuilder.DropColumn(
                 name: "user_id",
-                table: "cvs");
-
-            migrationBuilder.DropColumn(
-                name: "user_id2",
                 table: "cvs");
         }
     }

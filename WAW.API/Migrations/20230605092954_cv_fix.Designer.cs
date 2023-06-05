@@ -11,8 +11,8 @@ using WAW.API.Shared.Persistence.Contexts;
 namespace WAW.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230603211917_cv_develop_merge")]
-    partial class cv_develop_merge
+    [Migration("20230605092954_cv_fix")]
+    partial class cv_fix
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -86,6 +86,10 @@ namespace WAW.API.Migrations
                     b.Property<long?>("CoverId")
                         .HasColumnType("bigint")
                         .HasColumnName("cover_id");
+
+                    b.Property<long?>("CvId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("cv_id");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -378,8 +382,16 @@ namespace WAW.API.Migrations
                         .HasColumnType("varchar(256)")
                         .HasColumnName("title");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("user_id");
+
                     b.HasKey("Id")
                         .HasName("p_k_cvs");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_cvs_user_id");
 
                     b.ToTable("cvs", (string)null);
                 });
@@ -571,8 +583,23 @@ namespace WAW.API.Migrations
                     b.Navigation("Sender");
                 });
 
+            modelBuilder.Entity("WAW.API.Cvs.Domain.Models.Cv", b =>
+                {
+                    b.HasOne("WAW.API.Auth.Domain.Models.User", "User")
+                        .WithOne("Cv")
+                        .HasForeignKey("WAW.API.Cvs.Domain.Models.Cv", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_cvs_users_user_id");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WAW.API.Auth.Domain.Models.User", b =>
                 {
+                    b.Navigation("Cv")
+                        .IsRequired();
+
                     b.Navigation("Education");
 
                     b.Navigation("Experience");
