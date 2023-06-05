@@ -21,4 +21,8 @@ public class SubscriptionRequest {
   [Required]
   public float Cost{ get; set; }
 
+  [SwaggerSchema("Subscription items", Nullable = false)]
+  [Required]
+  public float Items { get; set; }
+
 }

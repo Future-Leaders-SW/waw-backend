@@ -180,6 +180,7 @@ public class AppDbContext : DbContext {
     subscriptionEntity.Property(p=> p.Description).IsRequired().HasMaxLength(100);
     subscriptionEntity.Property(p => p.Duration).IsRequired();
     subscriptionEntity.Property(P=> P.Cost).IsRequired();
+    subscriptionEntity.Property(P => P.Items).IsRequired();
 
     var planSubscriptionEntity = builder.Entity<PlanSubscription>();
     planSubscriptionEntity.ToTable("PlanSubscriptions");
