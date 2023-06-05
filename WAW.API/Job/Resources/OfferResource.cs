@@ -15,8 +15,11 @@ public class OfferResource {
   [SwaggerSchema("Job offer description", Nullable = false)]
   public string Description { get; set; } = string.Empty;
 
-  [SwaggerSchema("Job offer salary range", Nullable = false)]
-  public string SalaryRange { get; set; } = string.Empty;
+  [SwaggerSchema("Job offer minimum salary", Nullable = false)]
+  public decimal MinSalary { get; set; }
+
+  [SwaggerSchema("Job offer maximum salary", Nullable = false)]
+  public decimal MaxSalary { get; set; }
 
   [SwaggerSchema("Job offer status", Nullable = false)]
   public bool Status { get; set; }

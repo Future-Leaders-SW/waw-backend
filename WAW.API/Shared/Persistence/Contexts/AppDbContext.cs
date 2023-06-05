@@ -92,6 +92,8 @@ public class AppDbContext : DbContext {
     offerEntity.Property(p => p.Image).HasMaxLength(2048);
     offerEntity.Property(p => p.Description).IsRequired();
     offerEntity.Property(p => p.Status).IsRequired();
+    offerEntity.Property(p => p.MinSalary).IsRequired();
+    offerEntity.Property(p => p.MaxSalary).IsRequired();
 
     var userEntity = builder.Entity<User>();
     userEntity.ToTable("Users");
