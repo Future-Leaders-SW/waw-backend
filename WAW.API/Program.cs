@@ -113,20 +113,20 @@ try {
   app.UseSerilogRequestLogging();
 
   // Configure the HTTP request pipeline.
-  if (app.Environment.IsDevelopment()) {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-  } else {
-    // Trust the reverse proxy
-    app.UseForwardedHeaders();
+  //if (app.Environment.IsDevelopment()) {
+  app.UseSwagger();
+  app.UseSwaggerUI();
+  //} else {
+  // Trust the reverse proxy
+  app.UseForwardedHeaders();
 
-    if (!app.Environment.IsEnvironment("Testing")) {
-      // Apply any migrations needed automatically
-      var scope = app.Services.CreateScope();
-      var context = scope.ServiceProvider.GetService<AppDbContext>();
-      context?.Database.Migrate();
-    }
+  if (!app.Environment.IsEnvironment("Testing")) {
+    // Apply any migrations needed automatically
+    var scope = app.Services.CreateScope();
+    var context = scope.ServiceProvider.GetService<AppDbContext>();
+    context?.Database.Migrate();
   }
+  //}
 
   app.UseCors();
 
@@ -152,3 +152,4 @@ try {
 // ReSharper disable once ClassNeverInstantiated.Global
 [SuppressMessage("Design", "CA1050:Declare types in namespaces")]
 public partial class Program {}
+
