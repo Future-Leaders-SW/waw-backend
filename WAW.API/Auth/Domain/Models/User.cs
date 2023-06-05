@@ -1,10 +1,7 @@
 using System.Text.Json.Serialization;
 using WAW.API.Chat.Domain.Models;
 using WAW.API.Shared.Domain.Model;
-
 using WAW.API.Cvs.Domain.Models;
-
-using WAW.API.Subscriptions.Domain.Models;
 
 namespace WAW.API.Auth.Domain.Models;
 
@@ -36,11 +33,7 @@ public class User : BaseModel {
 
   public IList<ChatRoom> ChatRooms { get; set; } = new List<ChatRoom>();
 
-
   // Include CV
   public long? CvId { get; set; }
   public Cv Cv { get; set; }
-
-  public IList<PlanSubscription> PlanSubscriptions { get; set; } 
-
 }
