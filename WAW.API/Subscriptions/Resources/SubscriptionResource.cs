@@ -19,4 +19,7 @@ public class SubscriptionResource {
   [SwaggerSchema("Subscription cost", Nullable = false)]
   public float Cost { get; set; }
 
+  [SwaggerSchema("Subscription items", Nullable = false)]
+  public float Items { get; set; }
+
 }
