@@ -3,6 +3,7 @@ using WAW.API.Auth.Domain.Models;
 using WAW.API.Employers.Domain.Models;
 using WAW.API.Job.Domain.Models;
 using WAW.API.Chat.Domain.Models;
+using WAW.API.Cvs.Domain.Models;
 using WAW.API.Shared.Extensions;
 using WAW.API.Subscriptions.Domain.Models;
 using System.Reflection.Emit;
@@ -14,6 +15,7 @@ public class AppDbContext : DbContext {
   private DbSet<User>? users;
   private DbSet<Company>? companies;
   private DbSet<ChatRoom>? chatRooms;
+  private DbSet<Cv>? cvs;
   private DbSet<Message>? messages;
   private DbSet<ExternalImage>? images;
   private DbSet<UserEducation>? userEducation;
@@ -40,6 +42,11 @@ public class AppDbContext : DbContext {
   public DbSet<ChatRoom> ChatRooms {
     get => GetContext(chatRooms);
     set => chatRooms = value;
+  }
+  
+  public DbSet<Cv> Cvs {
+    get => GetContext(cvs);
+    set => cvs = value;
   }
 
   public DbSet<Message> Messages {
@@ -89,7 +96,14 @@ public class AppDbContext : DbContext {
     chatRoomEntity.Property(p => p.LastUpdateDate).IsRequired();
     chatRoomEntity.HasMany(p => p.Messages).WithOne(p => p.ChatRoom).HasForeignKey(p => p.ChatRoomId);
     chatRoomEntity.HasMany(p => p.Messages).WithOne(p => p.ChatRoom).HasForeignKey(p => p.ChatRoomId);
-
+    
+    var cvEntity = builder.Entity<Cv>();
+    cvEntity.ToTable("Cvs");
+    cvEntity.HasKey(p => p.Id);
+    cvEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+    cvEntity.Property(p => p.Title).IsRequired().HasMaxLength(256);
+    cvEntity.Property(p => p.Data).IsRequired();
+    
     var messageEntity = builder.Entity<Message>();
     messageEntity.ToTable("Message");
     messageEntity.HasKey(p => p.Id);
@@ -124,6 +138,8 @@ public class AppDbContext : DbContext {
     userEntity.HasMany(p => p.Projects).WithOne(p => p.User).HasForeignKey(p => p.UserId).IsRequired();
     userEntity.HasOne(p => p.Cover).WithOne().HasForeignKey<User>(p => p.CoverId);
     userEntity.HasOne(p => p.Picture).WithOne().HasForeignKey<User>(p => p.PictureId);
+    userEntity.HasOne(p => p.Cv).WithOne(p=>p.User).HasForeignKey<Cv>(p => p.UserId).OnDelete(DeleteBehavior.Cascade);
+
 
     var educationEntity = builder.Entity<UserEducation>();
     educationEntity.ToTable("UserEducation");

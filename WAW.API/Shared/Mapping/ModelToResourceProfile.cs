@@ -1,6 +1,7 @@
 using AutoMapper;
 using WAW.API.Auth.Mapping;
 using WAW.API.Chat.Mapping;
+using WAW.API.Cvs.Mapping;
 using WAW.API.Employers.Mapping;
 using WAW.API.Job.Mapping;
 using WAW.API.Subscriptions.Mapping;
@@ -14,5 +15,7 @@ public class ModelToResourceProfile : Profile {
     ChatModelToResourceProfile.Register(this);
     SubscriptionModelToResourceProfile.Register(this);
     PlanSubscriptionModelToResourceProfile.Register(this);
+    CvModelToResourceProfile.Register(this);
+    DetailResourceToCvProfile.Register(this);
   }
 }
