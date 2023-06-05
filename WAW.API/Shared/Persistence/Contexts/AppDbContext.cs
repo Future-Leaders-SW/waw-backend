@@ -5,6 +5,8 @@ using WAW.API.Job.Domain.Models;
 using WAW.API.Chat.Domain.Models;
 using WAW.API.Cvs.Domain.Models;
 using WAW.API.Shared.Extensions;
+using WAW.API.Subscriptions.Domain.Models;
+using System.Reflection.Emit;
 
 namespace WAW.API.Shared.Persistence.Contexts;
 
@@ -19,6 +21,8 @@ public class AppDbContext : DbContext {
   private DbSet<UserEducation>? userEducation;
   private DbSet<UserExperience>? userExperience;
   private DbSet<UserProject>? userProject;
+  private DbSet<Subscription>? subscriptions;
+  private DbSet<PlanSubscription>? planSubscriptions;
 
   public DbSet<Offer> Offers {
     get => GetContext(offers);
@@ -68,6 +72,15 @@ public class AppDbContext : DbContext {
   public DbSet<UserProject> UserProject {
     get => GetContext(userProject);
     set => userProject = value;
+  }
+
+  public DbSet<Subscription> Subscriptions {
+    get => GetContext(subscriptions);
+    set => subscriptions = value;
+  }
+  public DbSet<PlanSubscription> PlanSubscriptions {
+    get => GetContext(planSubscriptions);
+    set => planSubscriptions = value;
   }
 
   public AppDbContext(DbContextOptions options) : base(options) {}
@@ -172,6 +185,37 @@ public class AppDbContext : DbContext {
     companyEntity.Property(p => p.Name).IsRequired().HasMaxLength(100);
     companyEntity.Property(p => p.Address).HasMaxLength(256);
     companyEntity.Property(p => p.Email).IsRequired().HasMaxLength(256);
+
+    var subscriptionEntity = builder.Entity<Subscription>();
+    subscriptionEntity.ToTable("Subscriptions");
+    subscriptionEntity.HasKey(p => p.Id);
+    subscriptionEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+    subscriptionEntity.Property(p => p.NamePlan).IsRequired().HasMaxLength(100);
+    subscriptionEntity.Property(p=> p.Description).IsRequired().HasMaxLength(100);
+    subscriptionEntity.Property(p => p.Duration).IsRequired();
+    subscriptionEntity.Property(P=> P.Cost).IsRequired();
+    subscriptionEntity.Property(P => P.Items).IsRequired();
+
+    var planSubscriptionEntity = builder.Entity<PlanSubscription>();
+    planSubscriptionEntity.ToTable("PlanSubscriptions");
+    planSubscriptionEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+    planSubscriptionEntity.Property(p => p.StartDate).IsRequired();
+    planSubscriptionEntity.Property(p => p.EndDate).IsRequired();
+    planSubscriptionEntity.Property(p => p.PayedAmount).IsRequired();
+    planSubscriptionEntity.Property(p => p.PayedDate).IsRequired();
+
+    builder.Entity<PlanSubscription>()
+    .HasKey(bc => new { bc.UserId, bc.SubscriptionId, bc.Id });
+
+    builder.Entity<PlanSubscription>()
+    .HasOne(bc => bc.User)
+    .WithMany(b => b.PlanSubscriptions)
+    .HasForeignKey(bc => bc.UserId);
+
+    builder.Entity<PlanSubscription>()
+    .HasOne(bc => bc.Subscription)
+    .WithMany(c => c.PlanSubscriptions)
+    .HasForeignKey(bc => bc.SubscriptionId);
 
     builder.UseSnakeCase();
   }
