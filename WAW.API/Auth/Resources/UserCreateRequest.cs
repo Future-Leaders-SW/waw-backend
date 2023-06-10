@@ -33,9 +33,4 @@ public class UserCreateRequest {
   [Required]
   public string? Password { get; set; }
 
-  [SwaggerSchema("User cover picture", Nullable = true)]
-  public ExternalImageRequest? Cover { get; set; }
-
-  [SwaggerSchema("User profile picture", Nullable = true)]
-  public ExternalImageRequest? Picture { get; set; }
 }

@@ -62,10 +62,5 @@ public class SubscriptionService :ISubscriptionService{
     } catch (Exception e) {
       return new SubscriptionResponse($"An error occurred while deleting the subscription: {e.Message}");
     }
-
-
   }
-
-
-
 }

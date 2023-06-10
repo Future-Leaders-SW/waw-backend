@@ -29,10 +29,4 @@ public class UserResource {
 
   [SwaggerSchema("User birthdate", Nullable = false)]
   public DateTime Birthdate { get; set; }
-
-  [SwaggerSchema("User cover picture", Nullable = true)]
-  public ExternalImageResource? Cover { get; set; }
-
-  [SwaggerSchema("User profile picture", Nullable = true)]
-  public ExternalImageResource? Picture { get; set; }
 }

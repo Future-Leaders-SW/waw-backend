@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Swashbuckle.AspNetCore.Annotations;
+using WAW.API.Auth.Domain.Models;
 
 namespace WAW.API.Subscriptions.Resources;
 
@@ -25,4 +26,8 @@ public class SubscriptionRequest {
   [Required]
   public float Items { get; set; }
 
+  [SwaggerSchema("Subscription type", Nullable = false)]
+  [Required]
+  public UserType SubscriptionType { get; set; }
+  //Todo DataBaseContext
 }

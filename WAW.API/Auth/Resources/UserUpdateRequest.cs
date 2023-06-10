@@ -24,10 +24,4 @@ public class UserUpdateRequest {
   [SwaggerSchema("User birthdate", Nullable = false)]
   [Required]
   public DateTime? Birthdate { get; set; }
-
-  [SwaggerSchema("User cover picture", Nullable = true)]
-  public ExternalImageRequest? Cover { get; set; }
-
-  [SwaggerSchema("User profile picture", Nullable = true)]
-  public ExternalImageRequest? Picture { get; set; }
 }

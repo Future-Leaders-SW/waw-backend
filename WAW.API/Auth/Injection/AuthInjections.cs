@@ -11,16 +11,6 @@ public static class AuthInjections {
   public static void Register(IServiceCollection services) {
     services.AddScoped<IUserRepository, UserRepository>();
     services.AddScoped<IUserService, UserService>();
-
-    services.AddScoped<IUserEducationRepository, UserEducationRepository>();
-    services.AddScoped<IUserEducationService, UserEducationService>();
-
-    services.AddScoped<IUserExperienceRepository, UserExperienceRepository>();
-    services.AddScoped<IUserExperienceService, UserExperienceService>();
-
-    services.AddScoped<IUserProjectRepository, UserProjectRepository>();
-    services.AddScoped<IUserProjectService, UserProjectService>();
-
     services.AddScoped<IJwtHandler, JwtHandler>();
   }
 }

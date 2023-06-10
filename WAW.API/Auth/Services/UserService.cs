@@ -40,21 +40,8 @@ public class UserService : IUserService {
       return new AuthResponse($"An error occurred during authentication: ${e.Message}");
     }
   }
-
   public Task<IEnumerable<User>> ListAll() {
     return repository.ListAll();
-  }
-
-  public Task<IList<UserEducation>?> ListEducationByUser(long userId) {
-    return repository.ListEducationByUser(userId);
-  }
-
-  public Task<IList<UserExperience>?> ListExperienceByUser(long userId) {
-    return repository.ListExperienceByUser(userId);
-  }
-
-  public Task<IList<UserProject>?> ListProjectsByUser(long userId) {
-    return repository.ListProjectsByUser(userId);
   }
 
   public Task<User?> FindById(long id) {
@@ -76,6 +63,7 @@ public class UserService : IUserService {
   }
 
   public async Task<UserResponse> Register(User user) {
+
     if (repository.ExistsByEmail(user.Email)) {
       return new UserResponse($"Email {user.Email} already has an account");
     }
