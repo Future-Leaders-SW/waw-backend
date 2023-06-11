@@ -10,22 +10,22 @@ public class UbigeoRepository :BaseRepository, IUbigeoRepository{
   public UbigeoRepository(AppDbContext context) : base(context) {}
 
   public async Task<IEnumerable<Ubigeo>> ListAll() {
-    return await context.Ubigeo.ToListAsync();
+    return await context.Ubigeos.ToListAsync();
   }
 
   public async Task Add(Ubigeo ubigeo) {
-    await context.Ubigeo.AddAsync(ubigeo);
+    await context.Ubigeos.AddAsync(ubigeo);
   }
 
   public async Task<Ubigeo?> FindById(long id) {
-    return await context.Ubigeo.FindAsync(id);
+    return await context.Ubigeos.FindAsync(id);
   }
 
   public void Update(Ubigeo ubigeo) {
-    context.Ubigeo.Update(ubigeo);
+    context.Ubigeos.Update(ubigeo);
   }
 
   public void Remove(Ubigeo ubigeo) {
-    context.Ubigeo.Remove(ubigeo);
+    context.Ubigeos.Remove(ubigeo);
   }
 }

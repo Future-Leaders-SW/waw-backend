@@ -4,6 +4,8 @@ using WAW.API.Companies.Domain.Models;
 using WAW.API.Job.Domain.Models;
 using WAW.API.Cvs.Domain.Models;
 using WAW.API.ITProfessionals.Domain.Models;
+using WAW.API.JobPostScores.Domain.Models;
+using WAW.API.Recruiters.Domain.Models;
 using WAW.API.Shared.Domain.Model;
 using WAW.API.Shared.Extensions;
 using WAW.API.Subscriptions.Domain.Models;
@@ -18,7 +20,9 @@ public class AppDbContext : DbContext {
   private DbSet<Subscription>? subscriptions;
   private DbSet<PlanSubscription>? planSubscriptions;
   private DbSet<Ubigeo>? ubigeos;
-  private DbSet<ITProfessional> iTProfessionals;
+  private DbSet<ITProfessional>? iTProfessionals;
+  private DbSet<Recruiter>? recruiters;
+  private DbSet<JobPostScore>? jobPostScores;
 
   public DbSet<Offer> Offers {
     get => GetContext(offers);
@@ -53,9 +57,19 @@ public class AppDbContext : DbContext {
     set => ubigeos = value;
   }
 
-  public DbSet<ITProfessional> ITPRofessionals {
+  public DbSet<ITProfessional> ITProfessionals {
     get => GetContext(iTProfessionals);
     set => iTProfessionals = value;
+  }
+
+  public DbSet<Recruiter> Recruiters {
+    get => GetContext(recruiters);
+    set => recruiters = value;
+  }
+
+  public DbSet<JobPostScore> JobPostScores {
+    get => GetContext(jobPostScores);
+    set => jobPostScores = value;
   }
 
   public AppDbContext(DbContextOptions options) : base(options) {}
@@ -91,7 +105,7 @@ public class AppDbContext : DbContext {
     userEntity.Property(p => p.ProfileViews).HasDefaultValue(0);
     userEntity.Property(p => p.Birthdate).IsRequired();
     userEntity.Property(p => p.Password).IsRequired().HasMaxLength(60);
-    userEntity.HasOne(p => p.Cv).WithOne(p=>p.User).HasForeignKey<Cv>(p => p.UserId).OnDelete(DeleteBehavior.Cascade);
+    //userEntity.HasOne(p => p.Cv).WithOne(p=>p.User).HasForeignKey<Cv>(p => p.UserId).OnDelete(DeleteBehavior.Cascade);
     userEntity.HasOne(p => p.Ubigeo).WithMany();
 
     var companyEntity = builder.Entity<Company>();
@@ -148,6 +162,25 @@ public class AppDbContext : DbContext {
     itProfessionalEntity.Property(p => p.CvId).IsRequired();
     itProfessionalEntity.HasOne(p => p.User).WithOne().HasForeignKey<ITProfessional>(p => p.UserId).OnDelete(DeleteBehavior.Cascade);
     itProfessionalEntity.HasOne(p => p.Cv).WithOne().HasForeignKey<ITProfessional>(p => p.CvId).OnDelete(DeleteBehavior.Cascade);
+
+
+    var recruiterEntity = builder.Entity<Recruiter>();
+    recruiterEntity.ToTable("Recruiters");
+    recruiterEntity.HasKey(p => p.Id);
+    recruiterEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+    recruiterEntity.Property(p=>p.UserId).IsRequired();
+    recruiterEntity.Property(p=>p.CompanyId).IsRequired();
+    recruiterEntity.HasOne(p => p.User).WithOne().HasForeignKey<Recruiter>(p => p.UserId).OnDelete(DeleteBehavior.Cascade);
+    recruiterEntity.HasOne(p => p.Company).WithOne().HasForeignKey<Recruiter>(p => p.CompanyId).OnDelete(DeleteBehavior.Cascade);
+
+    var jobPotScoreEntity = builder.Entity<JobPostScore>();
+    jobPotScoreEntity.ToTable("JobPostScores");
+    jobPotScoreEntity.HasKey(p => p.Id);
+    jobPotScoreEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+    jobPotScoreEntity.Property(p=>p.JobOfferId).IsRequired();
+    jobPotScoreEntity.Property(p=>p.ITProfessionalId).IsRequired();
+    jobPotScoreEntity.HasOne(p => p.JobOffer).WithOne().HasForeignKey<JobPostScore>(p => p.JobOfferId).OnDelete(DeleteBehavior.Cascade);
+    jobPotScoreEntity.HasOne(p => p.ITProfessional).WithOne().HasForeignKey<JobPostScore>(p => p.ITProfessionalId).OnDelete(DeleteBehavior.Cascade);
 
 
     builder.UseSnakeCase();

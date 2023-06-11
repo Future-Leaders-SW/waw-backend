@@ -5,7 +5,7 @@ using WAW.API.ITProfessionals.Services;
 
 namespace WAW.API.ITProfessionals.Injection;
 
-public class ITProfessionalInjections {
+public static class ITProfessionalInjections {
 
   public static void Register(IServiceCollection services) {
     services.AddScoped<IITProfessionalRepository, ITProfessionalRepository>();

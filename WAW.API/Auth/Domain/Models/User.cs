@@ -31,15 +31,15 @@ public class User : BaseModel {
 
   // Relationships
   public long? CoverId { get; set; }
-  public IList<PlanSubscription> PlanSubscriptions { get; set; }
+  public IList<PlanSubscription> PlanSubscriptions { get; set; } = null!;
 
 
   // Include CV
   //TODO pasar a ItProfessional
-  public long? CvId { get; set; }
-  public Cv Cv { get; set; }
+  //public long? CvId { get; set; }
+  //public Cv Cv { get; set; } = null!;
 
   public long? UbigeoId { get; set; }
-  public Ubigeo Ubigeo{ get; set; }
+  public Ubigeo Ubigeo { get; set; } = null!;
 
 }

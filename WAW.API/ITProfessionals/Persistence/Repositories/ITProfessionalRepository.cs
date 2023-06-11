@@ -10,22 +10,22 @@ public class ITProfessionalRepository :BaseRepository,IITProfessionalRepository{
   public ITProfessionalRepository(AppDbContext context) : base(context) {}
 
   public async Task<IEnumerable<ITProfessional>> ListAll() {
-    return await context.ITPRofessionals.ToListAsync();
+    return await context.ITProfessionals.ToListAsync();
   }
 
   public async Task Add(ITProfessional itProfessional) {
-    await context.ITPRofessionals.AddAsync(itProfessional);
+    await context.ITProfessionals.AddAsync(itProfessional);
   }
 
   public async Task<ITProfessional?> FindById(long id) {
-    return await context.ITPRofessionals.FindAsync(id);
+    return await context.ITProfessionals.FindAsync(id);
   }
 
   public void Update(ITProfessional itProfessional) {
-    context.ITPRofessionals.Update(itProfessional);
+    context.ITProfessionals.Update(itProfessional);
   }
 
   public void Remove(ITProfessional itProfessional) {
-    context.ITPRofessionals.Remove(itProfessional);
+    context.ITProfessionals.Remove(itProfessional);
   }
 }

@@ -2,11 +2,11 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net.Mime;
-using WAW.API.Shared.Extensions;
 using WAW.API.Subscriptions.Domain.Models;
 using WAW.API.Subscriptions.Domain.Services;
 using WAW.API.Subscriptions.Resources;
 using WAW.API.Auth.Authorization.Attributes;
+using WAW.API.Shared.Extensions;
 
 namespace WAW.API.Subscriptions.Controllers;
 

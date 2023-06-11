@@ -32,9 +32,6 @@
     <Folder Include="Job\Domain\Models" />
     <Folder Include="Job\Domain\Repositories" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Employers\Controllers" />
-  </ItemGroup>
   <Target Name="RestoreTools" BeforeTargets="Restore;CollectPackageReferences;Husky">
     <Exec Command="dotnet tool restore" StandardOutputImportance="Low" StandardErrorImportance="High" />
   </Target>

@@ -5,18 +5,12 @@ namespace WAW.API.ITProfessionals.Resources;
 
 public class ITProfessionalRequest {
 
-
-  [SwaggerSchema("ITProfessional Id", Nullable = false)]
-  [Required]
-  public string? ITProfessionalId { get; set; }
-
-  //Todo revisar si es String, lo mismo en subscriptionPlan
   [SwaggerSchema("ITProfessional User Id", Nullable = false)]
   [Required]
-  public string? UserId { get; set; }
+  public long UserId { get; set; }
 
   [SwaggerSchema("ITProfessional Cv Id", Nullable = false)]
   [Required]
-  public string? CvId { get; set; }
+  public long CvId { get; set; }
 
 }
