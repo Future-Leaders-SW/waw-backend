@@ -9,4 +9,5 @@ public class Offer : BaseModel {
   public decimal MinSalary { get; set; }
   public decimal MaxSalary { get; set; }
   public bool Status { get; set; }
+  public IList<JobApplication> JobApplications { get; set; } = new List<JobApplication>();
 }
