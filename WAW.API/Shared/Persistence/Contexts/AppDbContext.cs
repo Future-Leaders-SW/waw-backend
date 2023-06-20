@@ -1,12 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using WAW.API.Auth.Domain.Models;
-using WAW.API.Employers.Domain.Models;
 using WAW.API.Job.Domain.Models;
 using WAW.API.Chat.Domain.Models;
 using WAW.API.Cvs.Domain.Models;
 using WAW.API.Shared.Extensions;
 using WAW.API.Subscriptions.Domain.Models;
-using System.Reflection.Emit;
+using WAW.API.Companies.Domain.Models;
+using WAW.API.ItProfessionals.Domain.Models;
+using WAW.API.JobPostScores.Domain.Models;
+using WAW.API.Recruiters.Domain.Models;
+using WAW.API.Shared.Domain.Model;
 
 namespace WAW.API.Shared.Persistence.Contexts;
 
@@ -23,6 +26,10 @@ public class AppDbContext : DbContext {
   private DbSet<UserProject>? userProject;
   private DbSet<Subscription>? subscriptions;
   private DbSet<PlanSubscription>? planSubscriptions;
+  private DbSet<Ubigeo>? ubigeos;
+  private DbSet<ItProfessional>? itProfessional;
+  private DbSet<Recruiter>? recruiters;
+  private DbSet<JobPostScore>? jobPostScores;
 
   public DbSet<Offer> Offers {
     get => GetContext(offers);
@@ -43,7 +50,7 @@ public class AppDbContext : DbContext {
     get => GetContext(chatRooms);
     set => chatRooms = value;
   }
-  
+
   public DbSet<Cv> Cvs {
     get => GetContext(cvs);
     set => cvs = value;
@@ -83,6 +90,26 @@ public class AppDbContext : DbContext {
     set => planSubscriptions = value;
   }
 
+  public DbSet<Ubigeo> Ubigeos {
+    get => GetContext(ubigeos);
+    set => ubigeos = value;
+  }
+
+  public DbSet<ItProfessional> ItProfessionals {
+    get => GetContext(itProfessional);
+    set => itProfessional = value;
+  }
+
+  public DbSet<Recruiter> Recruiters {
+    get => GetContext(recruiters);
+    set => recruiters = value;
+  }
+
+  public DbSet<JobPostScore> JobPostScores {
+    get => GetContext(jobPostScores);
+    set => jobPostScores = value;
+  }
+
   public AppDbContext(DbContextOptions options) : base(options) {}
 
   protected override void OnModelCreating(ModelBuilder builder) {
@@ -96,14 +123,14 @@ public class AppDbContext : DbContext {
     chatRoomEntity.Property(p => p.LastUpdateDate).IsRequired();
     chatRoomEntity.HasMany(p => p.Messages).WithOne(p => p.ChatRoom).HasForeignKey(p => p.ChatRoomId);
     chatRoomEntity.HasMany(p => p.Messages).WithOne(p => p.ChatRoom).HasForeignKey(p => p.ChatRoomId);
-    
+
     var cvEntity = builder.Entity<Cv>();
     cvEntity.ToTable("Cvs");
     cvEntity.HasKey(p => p.Id);
     cvEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
     cvEntity.Property(p => p.Title).IsRequired().HasMaxLength(256);
     cvEntity.Property(p => p.Data).IsRequired();
-    
+
     var messageEntity = builder.Entity<Message>();
     messageEntity.ToTable("Message");
     messageEntity.HasKey(p => p.Id);
@@ -132,13 +159,14 @@ public class AppDbContext : DbContext {
     userEntity.Property(p => p.ProfileViews).HasDefaultValue(0);
     userEntity.Property(p => p.Birthdate).IsRequired();
     userEntity.Property(p => p.Password).IsRequired().HasMaxLength(60);
+    userEntity.Property(p => p.UbigeoId).IsRequired();
     userEntity.HasMany(p => p.ChatRooms).WithMany(p => p.Participants);
     userEntity.HasMany(p => p.Education).WithOne(p => p.User).HasForeignKey(p => p.UserId).IsRequired();
     userEntity.HasMany(p => p.Experience).WithOne(p => p.User).HasForeignKey(p => p.UserId).IsRequired();
     userEntity.HasMany(p => p.Projects).WithOne(p => p.User).HasForeignKey(p => p.UserId).IsRequired();
     userEntity.HasOne(p => p.Cover).WithOne().HasForeignKey<User>(p => p.CoverId);
     userEntity.HasOne(p => p.Picture).WithOne().HasForeignKey<User>(p => p.PictureId);
-    userEntity.HasOne(p => p.Cv).WithOne(p=>p.User).HasForeignKey<Cv>(p => p.UserId).OnDelete(DeleteBehavior.Cascade);
+    userEntity.HasOne(p => p.Ubigeo).WithOne().HasForeignKey<User>(p => p.UbigeoId).OnDelete(DeleteBehavior.NoAction);
 
 
     var educationEntity = builder.Entity<UserEducation>();
@@ -218,6 +246,46 @@ public class AppDbContext : DbContext {
     .HasOne(bc => bc.Subscription)
     .WithMany(c => c.PlanSubscriptions)
     .HasForeignKey(bc => bc.SubscriptionId);
+
+
+
+    var ubigeoEntity = builder.Entity<Ubigeo>();
+    ubigeoEntity.ToTable("Ubigeos");
+    ubigeoEntity.HasKey(p => p.Id);
+    ubigeoEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+    ubigeoEntity.Property(p => p.Departamento).IsRequired().HasMaxLength(50);
+    ubigeoEntity.Property(p => p.Provincia).IsRequired().HasMaxLength(50);
+    ubigeoEntity.Property(p => p.Distrito).IsRequired().HasMaxLength(50);
+
+    var itProfessionalEntity = builder.Entity<ItProfessional>();
+    itProfessionalEntity.ToTable("ItProfessionals");
+    itProfessionalEntity.HasKey(p => p.Id);
+    itProfessionalEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+    itProfessionalEntity.Property(p => p.UserId).IsRequired();
+    itProfessionalEntity.Property(p => p.CvId).IsRequired();
+    itProfessionalEntity.HasOne(p => p.User).WithOne().HasForeignKey<ItProfessional>(p => p.UserId).OnDelete(DeleteBehavior.Cascade);
+    itProfessionalEntity.HasOne(p => p.Cv).WithOne().HasForeignKey<ItProfessional>(p => p.CvId).OnDelete(DeleteBehavior.Cascade);
+
+
+    var recruiterEntity = builder.Entity<Recruiter>();
+    recruiterEntity.ToTable("Recruiters");
+    recruiterEntity.HasKey(p => p.Id);
+    recruiterEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+    recruiterEntity.Property(p=>p.UserId).IsRequired();
+    recruiterEntity.Property(p=>p.CompanyId).IsRequired();
+    recruiterEntity.HasOne(p => p.User).WithOne().HasForeignKey<Recruiter>(p => p.UserId).OnDelete(DeleteBehavior.Cascade);
+    recruiterEntity.HasOne(p => p.Company).WithOne().HasForeignKey<Recruiter>(p => p.CompanyId).OnDelete(DeleteBehavior.Cascade);
+
+    var jobPotScoreEntity = builder.Entity<JobPostScore>();
+    jobPotScoreEntity.ToTable("JobPostScores");
+    jobPotScoreEntity.HasKey(p => p.Id);
+    jobPotScoreEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+    jobPotScoreEntity.Property(p=>p.JobOfferId).IsRequired();
+    jobPotScoreEntity.Property(p=>p.ItProfessionalId).IsRequired();
+    jobPotScoreEntity.HasOne(p => p.JobOffer).WithOne().HasForeignKey<JobPostScore>(p => p.JobOfferId).OnDelete(DeleteBehavior.Cascade);
+    jobPotScoreEntity.HasOne(p => p.ItProfessional).WithOne().HasForeignKey<JobPostScore>(p => p.ItProfessionalId).OnDelete(DeleteBehavior.Cascade);
+
+
 
     builder.UseSnakeCase();
   }
