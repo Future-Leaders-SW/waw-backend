@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using WAW.API.Employers.Resources;
 
 namespace WAW.API.Auth.Resources;
 

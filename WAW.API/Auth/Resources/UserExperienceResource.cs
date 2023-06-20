@@ -1,4 +1,4 @@
-using WAW.API.Companies.Resources;
+using WAW.API.Employers.Resources;
 
 namespace WAW.API.Auth.Resources;
 

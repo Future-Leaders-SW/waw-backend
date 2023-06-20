@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WAW.API.Shared.Persistence.Contexts;
 
@@ -10,9 +11,10 @@ using WAW.API.Shared.Persistence.Contexts;
 namespace WAW.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230603203654_PlanSubscription")]
+    partial class PlanSubscription
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -35,7 +37,7 @@ namespace WAW.API.Migrations
                     b.HasIndex("ParticipantsId")
                         .HasDatabaseName("i_x_chat_room_user_participants_id");
 
-                    b.ToTable("chat_room_user", (string)null);
+                    b.ToTable("chat_room_user");
                 });
 
             modelBuilder.Entity("WAW.API.Auth.Domain.Models.ExternalImage", b =>
@@ -84,10 +86,6 @@ namespace WAW.API.Migrations
                     b.Property<long?>("CoverId")
                         .HasColumnType("bigint")
                         .HasColumnName("cover_id");
-
-                    b.Property<long?>("CvId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("cv_id");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -362,38 +360,6 @@ namespace WAW.API.Migrations
                     b.ToTable("message", (string)null);
                 });
 
-            modelBuilder.Entity("WAW.API.Cvs.Domain.Models.Cv", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
-                    b.Property<byte[]>("Data")
-                        .IsRequired()
-                        .HasColumnType("longblob")
-                        .HasColumnName("data");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
-                        .HasColumnName("title");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id")
-                        .HasName("p_k_cvs");
-
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasDatabaseName("i_x_cvs_user_id");
-
-                    b.ToTable("cvs", (string)null);
-                });
-
             modelBuilder.Entity("WAW.API.Employers.Domain.Models.Company", b =>
                 {
                     b.Property<long>("Id")
@@ -460,6 +426,79 @@ namespace WAW.API.Migrations
                         .HasName("p_k_offers");
 
                     b.ToTable("offers", (string)null);
+                });
+
+            modelBuilder.Entity("WAW.API.Subscriptions.Domain.Models.PlanSubscription", b =>
+                {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("user_id");
+
+                    b.Property<long>("SubscriptionId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("subscription_id");
+
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("end_date");
+
+                    b.Property<float>("PayedAmount")
+                        .HasColumnType("float")
+                        .HasColumnName("payed_amount");
+
+                    b.Property<DateTime>("PayedDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("payed_date");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("start_date");
+
+                    b.HasKey("UserId", "SubscriptionId", "Id")
+                        .HasName("p_k_plan_subscriptions");
+
+                    b.HasIndex("SubscriptionId")
+                        .HasDatabaseName("i_x_plan_subscriptions_subscription_id");
+
+                    b.ToTable("plan_subscriptions", (string)null);
+                });
+
+            modelBuilder.Entity("WAW.API.Subscriptions.Domain.Models.Subscription", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    b.Property<float>("Cost")
+                        .HasColumnType("float")
+                        .HasColumnName("cost");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("description");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int")
+                        .HasColumnName("duration");
+
+                    b.Property<string>("NamePlan")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("name_plan");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_subscriptions");
+
+                    b.ToTable("subscriptions", (string)null);
                 });
 
             modelBuilder.Entity("ChatRoomUser", b =>
@@ -581,26 +620,34 @@ namespace WAW.API.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("WAW.API.Cvs.Domain.Models.Cv", b =>
+            modelBuilder.Entity("WAW.API.Subscriptions.Domain.Models.PlanSubscription", b =>
                 {
-                    b.HasOne("WAW.API.Auth.Domain.Models.User", "User")
-                        .WithOne("Cv")
-                        .HasForeignKey("WAW.API.Cvs.Domain.Models.Cv", "UserId")
+                    b.HasOne("WAW.API.Subscriptions.Domain.Models.Subscription", "Subscription")
+                        .WithMany("PlanSubscriptions")
+                        .HasForeignKey("SubscriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("f_k_cvs_users_user_id");
+                        .HasConstraintName("f_k_plan_subscriptions__subscriptions_subscription_id");
+
+                    b.HasOne("WAW.API.Auth.Domain.Models.User", "User")
+                        .WithMany("PlanSubscriptions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_plan_subscriptions_users_user_id");
+
+                    b.Navigation("Subscription");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("WAW.API.Auth.Domain.Models.User", b =>
                 {
-                    b.Navigation("Cv")
-                        .IsRequired();
-
                     b.Navigation("Education");
 
                     b.Navigation("Experience");
+
+                    b.Navigation("PlanSubscriptions");
 
                     b.Navigation("Projects");
                 });
@@ -608,6 +655,11 @@ namespace WAW.API.Migrations
             modelBuilder.Entity("WAW.API.Chat.Domain.Models.ChatRoom", b =>
                 {
                     b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("WAW.API.Subscriptions.Domain.Models.Subscription", b =>
+                {
+                    b.Navigation("PlanSubscriptions");
                 });
 #pragma warning restore 612, 618
         }

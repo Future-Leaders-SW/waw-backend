@@ -1,6 +1,6 @@
 using BoDi;
 using Microsoft.AspNetCore.Mvc.Testing;
-using WAW.API.Companies.Domain.Repositories;
+using WAW.API.Employers.Domain.Repositories;
 using WAW.API.Shared.Domain.Repositories;
 using WAW.API.Tests.Helpers;
 
