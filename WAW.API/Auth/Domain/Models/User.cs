@@ -39,4 +39,6 @@ public class User : BaseModel {
   public Ubigeo Ubigeo { get; set; } = null!;
   public long? UbigeoId { get; set; }
 
+  public UserType UserType { get; set; }
+
 }

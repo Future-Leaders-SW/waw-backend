@@ -1,4 +1,5 @@
 using Swashbuckle.AspNetCore.Annotations;
+using WAW.API.Auth.Domain.Models;
 
 namespace WAW.API.Auth.Resources;
 
@@ -35,4 +36,7 @@ public class UserResource {
 
   [SwaggerSchema("User profile picture", Nullable = true)]
   public ExternalImageResource? Picture { get; set; }
+
+  [SwaggerSchema("User type", Nullable = true)]
+  public UserType? UserType { get; set; }
 }

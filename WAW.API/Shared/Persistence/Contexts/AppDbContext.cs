@@ -159,6 +159,7 @@ public class AppDbContext : DbContext {
     userEntity.Property(p => p.ProfileViews).HasDefaultValue(0);
     userEntity.Property(p => p.Birthdate).IsRequired();
     userEntity.Property(p => p.Password).IsRequired().HasMaxLength(60);
+    userEntity.Property(p => p.UserType).IsRequired();
     userEntity.Property(p => p.UbigeoId).IsRequired();
     userEntity.HasMany(p => p.ChatRooms).WithMany(p => p.Participants);
     userEntity.HasMany(p => p.Education).WithOne(p => p.User).HasForeignKey(p => p.UserId).IsRequired();
@@ -167,6 +168,7 @@ public class AppDbContext : DbContext {
     userEntity.HasOne(p => p.Cover).WithOne().HasForeignKey<User>(p => p.CoverId);
     userEntity.HasOne(p => p.Picture).WithOne().HasForeignKey<User>(p => p.PictureId);
     userEntity.HasOne(p => p.Ubigeo).WithOne().HasForeignKey<User>(p => p.UbigeoId).OnDelete(DeleteBehavior.NoAction);
+    
 
 
     var educationEntity = builder.Entity<UserEducation>();
@@ -225,6 +227,7 @@ public class AppDbContext : DbContext {
     subscriptionEntity.Property(p => p.Duration).IsRequired();
     subscriptionEntity.Property(P=> P.Cost).IsRequired();
     subscriptionEntity.Property(P => P.Items).IsRequired();
+    subscriptionEntity.Property(P => P.SubscriptionType).IsRequired();
 
     var planSubscriptionEntity = builder.Entity<PlanSubscription>();
     planSubscriptionEntity.ToTable("PlanSubscriptions");
