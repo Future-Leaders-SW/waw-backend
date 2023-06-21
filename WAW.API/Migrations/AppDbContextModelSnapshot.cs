@@ -35,7 +35,7 @@ namespace WAW.API.Migrations
                     b.HasIndex("ParticipantsId")
                         .HasDatabaseName("i_x_chat_room_user_participants_id");
 
-                    b.ToTable("chat_room_user", (string)null);
+                    b.ToTable("chat_room_user");
                 });
 
             modelBuilder.Entity("WAW.API.Auth.Domain.Models.ExternalImage", b =>
@@ -85,10 +85,6 @@ namespace WAW.API.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("cover_id");
 
-                    b.Property<long?>("CvId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("cv_id");
-
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(254)
@@ -127,6 +123,11 @@ namespace WAW.API.Migrations
                         .HasDefaultValue(0)
                         .HasColumnName("profile_views");
 
+                    b.Property<long?>("UbigeoId")
+                        .IsRequired()
+                        .HasColumnType("bigint")
+                        .HasColumnName("ubigeo_id");
+
                     b.HasKey("Id")
                         .HasName("p_k_users");
 
@@ -137,6 +138,10 @@ namespace WAW.API.Migrations
                     b.HasIndex("PictureId")
                         .IsUnique()
                         .HasDatabaseName("i_x_users_picture_id");
+
+                    b.HasIndex("UbigeoId")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_users_ubigeo_id");
 
                     b.ToTable("users", (string)null);
                 });
@@ -362,39 +367,7 @@ namespace WAW.API.Migrations
                     b.ToTable("message", (string)null);
                 });
 
-            modelBuilder.Entity("WAW.API.Cvs.Domain.Models.Cv", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint")
-                        .HasColumnName("id");
-
-                    b.Property<byte[]>("Data")
-                        .IsRequired()
-                        .HasColumnType("longblob")
-                        .HasColumnName("data");
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(256)
-                        .HasColumnType("varchar(256)")
-                        .HasColumnName("title");
-
-                    b.Property<long>("UserId")
-                        .HasColumnType("bigint")
-                        .HasColumnName("user_id");
-
-                    b.HasKey("Id")
-                        .HasName("p_k_cvs");
-
-                    b.HasIndex("UserId")
-                        .IsUnique()
-                        .HasDatabaseName("i_x_cvs_user_id");
-
-                    b.ToTable("cvs", (string)null);
-                });
-
-            modelBuilder.Entity("WAW.API.Employers.Domain.Models.Company", b =>
+            modelBuilder.Entity("WAW.API.Companies.Domain.Models.Company", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
@@ -424,6 +397,59 @@ namespace WAW.API.Migrations
                     b.ToTable("companies", (string)null);
                 });
 
+            modelBuilder.Entity("WAW.API.Cvs.Domain.Models.Cv", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    b.Property<byte[]>("Data")
+                        .IsRequired()
+                        .HasColumnType("longblob")
+                        .HasColumnName("data");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("varchar(256)")
+                        .HasColumnName("title");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_cvs");
+
+                    b.ToTable("cvs", (string)null);
+                });
+
+            modelBuilder.Entity("WAW.API.ItProfessionals.Domain.Models.ItProfessional", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    b.Property<long>("CvId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("cv_id");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_it_professionals");
+
+                    b.HasIndex("CvId")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_it_professionals_cv_id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_it_professionals_user_id");
+
+                    b.ToTable("it_professionals", (string)null);
+                });
+
             modelBuilder.Entity("WAW.API.Job.Domain.Models.Offer", b =>
                 {
                     b.Property<long>("Id")
@@ -441,10 +467,13 @@ namespace WAW.API.Migrations
                         .HasColumnType("varchar(2048)")
                         .HasColumnName("image");
 
-                    b.Property<string>("SalaryRange")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("salary_range");
+                    b.Property<decimal>("MaxSalary")
+                        .HasColumnType("decimal(65,30)")
+                        .HasColumnName("max_salary");
+
+                    b.Property<decimal>("MinSalary")
+                        .HasColumnType("decimal(65,30)")
+                        .HasColumnName("min_salary");
 
                     b.Property<bool>("Status")
                         .HasColumnType("tinyint(1)")
@@ -460,6 +489,173 @@ namespace WAW.API.Migrations
                         .HasName("p_k_offers");
 
                     b.ToTable("offers", (string)null);
+                });
+
+            modelBuilder.Entity("WAW.API.JobPostScores.Domain.Models.JobPostScore", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    b.Property<long>("ItProfessionalId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("it_professional_id");
+
+                    b.Property<long>("JobOfferId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("job_offer_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_job_post_scores");
+
+                    b.HasIndex("ItProfessionalId")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_job_post_scores_it_professional_id");
+
+                    b.HasIndex("JobOfferId")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_job_post_scores_job_offer_id");
+
+                    b.ToTable("job_post_scores", (string)null);
+                });
+
+            modelBuilder.Entity("WAW.API.Recruiters.Domain.Models.Recruiter", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    b.Property<long>("CompanyId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("company_id");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_recruiters");
+
+                    b.HasIndex("CompanyId")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_recruiters_company_id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_recruiters_user_id");
+
+                    b.ToTable("recruiters", (string)null);
+                });
+
+            modelBuilder.Entity("WAW.API.Shared.Domain.Model.Ubigeo", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Departamento")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("departamento");
+
+                    b.Property<string>("Distrito")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("distrito");
+
+                    b.Property<string>("Provincia")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("provincia");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_ubigeos");
+
+                    b.ToTable("ubigeos", (string)null);
+                });
+
+            modelBuilder.Entity("WAW.API.Subscriptions.Domain.Models.PlanSubscription", b =>
+                {
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("user_id");
+
+                    b.Property<long>("SubscriptionId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("subscription_id");
+
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("EndDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("end_date");
+
+                    b.Property<float>("PayedAmount")
+                        .HasColumnType("float")
+                        .HasColumnName("payed_amount");
+
+                    b.Property<DateTime>("PayedDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("payed_date");
+
+                    b.Property<DateTime>("StartDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("start_date");
+
+                    b.HasKey("UserId", "SubscriptionId", "Id")
+                        .HasName("p_k_plan_subscriptions");
+
+                    b.HasIndex("SubscriptionId")
+                        .HasDatabaseName("i_x_plan_subscriptions_subscription_id");
+
+                    b.ToTable("plan_subscriptions", (string)null);
+                });
+
+            modelBuilder.Entity("WAW.API.Subscriptions.Domain.Models.Subscription", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    b.Property<float>("Cost")
+                        .HasColumnType("float")
+                        .HasColumnName("cost");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("description");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int")
+                        .HasColumnName("duration");
+
+                    b.Property<string>("Items")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("items");
+
+                    b.Property<string>("NamePlan")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("name_plan");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_subscriptions");
+
+                    b.ToTable("subscriptions", (string)null);
                 });
 
             modelBuilder.Entity("ChatRoomUser", b =>
@@ -491,9 +687,18 @@ namespace WAW.API.Migrations
                         .HasForeignKey("WAW.API.Auth.Domain.Models.User", "PictureId")
                         .HasConstraintName("f_k_users_images_picture_id");
 
+                    b.HasOne("WAW.API.Shared.Domain.Model.Ubigeo", "Ubigeo")
+                        .WithOne()
+                        .HasForeignKey("WAW.API.Auth.Domain.Models.User", "UbigeoId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("f_k_users__ubigeos_ubigeo_id");
+
                     b.Navigation("Cover");
 
                     b.Navigation("Picture");
+
+                    b.Navigation("Ubigeo");
                 });
 
             modelBuilder.Entity("WAW.API.Auth.Domain.Models.UserEducation", b =>
@@ -517,7 +722,7 @@ namespace WAW.API.Migrations
 
             modelBuilder.Entity("WAW.API.Auth.Domain.Models.UserExperience", b =>
                 {
-                    b.HasOne("WAW.API.Employers.Domain.Models.Company", "Company")
+                    b.HasOne("WAW.API.Companies.Domain.Models.Company", "Company")
                         .WithOne()
                         .HasForeignKey("WAW.API.Auth.Domain.Models.UserExperience", "CompanyId")
                         .HasConstraintName("f_k_user_experience__companies_company_id");
@@ -581,26 +786,97 @@ namespace WAW.API.Migrations
                     b.Navigation("Sender");
                 });
 
-            modelBuilder.Entity("WAW.API.Cvs.Domain.Models.Cv", b =>
+            modelBuilder.Entity("WAW.API.ItProfessionals.Domain.Models.ItProfessional", b =>
                 {
-                    b.HasOne("WAW.API.Auth.Domain.Models.User", "User")
-                        .WithOne("Cv")
-                        .HasForeignKey("WAW.API.Cvs.Domain.Models.Cv", "UserId")
+                    b.HasOne("WAW.API.Cvs.Domain.Models.Cv", "Cv")
+                        .WithOne()
+                        .HasForeignKey("WAW.API.ItProfessionals.Domain.Models.ItProfessional", "CvId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("f_k_cvs_users_user_id");
+                        .HasConstraintName("f_k_it_professionals_cvs_cv_id");
+
+                    b.HasOne("WAW.API.Auth.Domain.Models.User", "User")
+                        .WithOne()
+                        .HasForeignKey("WAW.API.ItProfessionals.Domain.Models.ItProfessional", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_it_professionals_users_user_id");
+
+                    b.Navigation("Cv");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WAW.API.JobPostScores.Domain.Models.JobPostScore", b =>
+                {
+                    b.HasOne("WAW.API.ItProfessionals.Domain.Models.ItProfessional", "ItProfessional")
+                        .WithOne()
+                        .HasForeignKey("WAW.API.JobPostScores.Domain.Models.JobPostScore", "ItProfessionalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_job_post_scores_it_professionals_it_professional_id");
+
+                    b.HasOne("WAW.API.Job.Domain.Models.Offer", "JobOffer")
+                        .WithOne()
+                        .HasForeignKey("WAW.API.JobPostScores.Domain.Models.JobPostScore", "JobOfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_job_post_scores_offers_job_offer_id");
+
+                    b.Navigation("ItProfessional");
+
+                    b.Navigation("JobOffer");
+                });
+
+            modelBuilder.Entity("WAW.API.Recruiters.Domain.Models.Recruiter", b =>
+                {
+                    b.HasOne("WAW.API.Companies.Domain.Models.Company", "Company")
+                        .WithOne()
+                        .HasForeignKey("WAW.API.Recruiters.Domain.Models.Recruiter", "CompanyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_recruiters_companies_company_id");
+
+                    b.HasOne("WAW.API.Auth.Domain.Models.User", "User")
+                        .WithOne()
+                        .HasForeignKey("WAW.API.Recruiters.Domain.Models.Recruiter", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_recruiters_users_user_id");
+
+                    b.Navigation("Company");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("WAW.API.Subscriptions.Domain.Models.PlanSubscription", b =>
+                {
+                    b.HasOne("WAW.API.Subscriptions.Domain.Models.Subscription", "Subscription")
+                        .WithMany("PlanSubscriptions")
+                        .HasForeignKey("SubscriptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_plan_subscriptions__subscriptions_subscription_id");
+
+                    b.HasOne("WAW.API.Auth.Domain.Models.User", "User")
+                        .WithMany("PlanSubscriptions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_plan_subscriptions_users_user_id");
+
+                    b.Navigation("Subscription");
 
                     b.Navigation("User");
                 });
 
             modelBuilder.Entity("WAW.API.Auth.Domain.Models.User", b =>
                 {
-                    b.Navigation("Cv")
-                        .IsRequired();
-
                     b.Navigation("Education");
 
                     b.Navigation("Experience");
+
+                    b.Navigation("PlanSubscriptions");
 
                     b.Navigation("Projects");
                 });
@@ -608,6 +884,11 @@ namespace WAW.API.Migrations
             modelBuilder.Entity("WAW.API.Chat.Domain.Models.ChatRoom", b =>
                 {
                     b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("WAW.API.Subscriptions.Domain.Models.Subscription", b =>
+                {
+                    b.Navigation("PlanSubscriptions");
                 });
 #pragma warning restore 612, 618
         }

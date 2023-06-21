@@ -1,4 +1,4 @@
-using WAW.API.Employers.Domain.Models;
+using WAW.API.Companies.Domain.Models;
 using WAW.API.Shared.Domain.Model;
 
 namespace WAW.API.Auth.Domain.Models;

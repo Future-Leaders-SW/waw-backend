@@ -32,7 +32,7 @@ public class CvController : ControllerBase {
     var cvs = await service.ListAll();
     return mapper.Map<IEnumerable<Cv>, IEnumerable<CvResource>>(cvs);
   }
-  
+
   [HttpGet("{id}")]
   [ProducesResponseType(typeof(CvResource), 200)]
   [SwaggerResponse(200, "The Cv was retrieved successfully", typeof(CvResource))]
@@ -42,7 +42,7 @@ public class CvController : ControllerBase {
     var cv = await service.GetById(id);
     return cv.ToResponse<CvResource>(this, mapper);
   }
-  
+
   [HttpGet("{id}/file")]
   [SwaggerResponse(200, "The Cv file was retrieved successfully", typeof(FileContentResult))]
   [SwaggerResponse(404, "The Cv file was not found")]
@@ -75,14 +75,13 @@ public class CvController : ControllerBase {
     var cv = new Cv
     {
       Title = cvCreateModel.Title,
-      Data = memoryStream.ToArray(),
-      UserId = cvCreateModel.UserId
+      Data = memoryStream.ToArray()
     };
 
     var result = await service.Create(cv);
     return result.ToResponse<CvResource>(this, mapper);
   }
-  
+
   [HttpPut("{id:int}")]
   [ProducesResponseType(typeof(CvResource), 200)]
   [ProducesResponseType(typeof(List<string>), 400)]
