@@ -124,7 +124,7 @@ try {
     // Apply any migrations needed automatically
     var scope = app.Services.CreateScope();
     var context = scope.ServiceProvider.GetService<AppDbContext>();
-    //context?.Database.Migrate();
+    context?.Database.Migrate();
   }
   //}
 
