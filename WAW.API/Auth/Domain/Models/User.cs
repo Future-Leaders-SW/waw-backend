@@ -36,7 +36,7 @@ public class User : BaseModel {
 
   public IList<PlanSubscription> PlanSubscriptions { get; set; }
 
-  public Ubigeo Ubigeo { get; set; } = null!;
+  public Ubigeo? Ubigeo { get; set; }
   public long? UbigeoId { get; set; }
 
   public UserType UserType { get; set; }

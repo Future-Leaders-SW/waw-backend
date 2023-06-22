@@ -17,5 +17,6 @@ public class ModelToResourceProfile : Profile {
     PlanSubscriptionModelToResourceProfile.Register(this);
     CvModelToResourceProfile.Register(this);
     DetailResourceToCvProfile.Register(this);
+    UbigeoModelToResource.Register(this);
   }
 }
