@@ -9,4 +9,5 @@ public class JobPostScore :BaseModel{
   public long ItProfessionalId { get; set; }
   public Offer JobOffer { get; set; } = null!;
   public long JobOfferId { get; set; }
+  public double Score { get; set; }
 }

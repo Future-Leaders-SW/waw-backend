@@ -285,6 +285,7 @@ public class AppDbContext : DbContext {
     jobPotScoreEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
     jobPotScoreEntity.Property(p=>p.JobOfferId).IsRequired();
     jobPotScoreEntity.Property(p=>p.ItProfessionalId).IsRequired();
+    jobPotScoreEntity.Property(p=>p.Score).IsRequired();
     jobPotScoreEntity.HasOne(p => p.JobOffer).WithOne().HasForeignKey<JobPostScore>(p => p.JobOfferId).OnDelete(DeleteBehavior.Cascade);
     jobPotScoreEntity.HasOne(p => p.ItProfessional).WithOne().HasForeignKey<JobPostScore>(p => p.ItProfessionalId).OnDelete(DeleteBehavior.Cascade);
 

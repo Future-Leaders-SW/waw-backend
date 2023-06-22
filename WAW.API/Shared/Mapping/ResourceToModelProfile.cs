@@ -4,6 +4,7 @@ using WAW.API.Chat.Mapping;
 using WAW.API.Companies.Mapping;
 using WAW.API.Cvs.Mapping;
 using WAW.API.Job.Mapping;
+using WAW.API.JobPostScores.Mapping;
 using WAW.API.Subscriptions.Mapping;
 namespace WAW.API.Shared.Mapping;
 
@@ -17,5 +18,6 @@ public class ResourceToModelProfile : Profile {
     PlanSubscriptionResourceToModelProfile.Register(this);
     CvResourceToModelProfile.Register(this);
     CvCreateModelToModelProfile.Register(this);
+    JobPostScoreResourceToModel.Register(this);
   }
 }

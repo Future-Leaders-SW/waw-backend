@@ -5,6 +5,8 @@ using WAW.API.Companies.Mapping;
 using WAW.API.Cvs.Mapping;
 using WAW.API.Job.Mapping;
 using WAW.API.Subscriptions.Mapping;
+//jobpostscore
+using WAW.API.JobPostScores.Mapping;
 namespace WAW.API.Shared.Mapping;
 
 public class ModelToResourceProfile : Profile {
@@ -17,5 +19,6 @@ public class ModelToResourceProfile : Profile {
     PlanSubscriptionModelToResourceProfile.Register(this);
     CvModelToResourceProfile.Register(this);
     DetailResourceToCvProfile.Register(this);
+    JobPostScoreModelToResource.Register(this);
   }
 }
