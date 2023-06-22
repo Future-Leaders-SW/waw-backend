@@ -26,6 +26,7 @@ public class OffersController : ControllerBase {
   public OffersController(IOfferService service, IMapper mapper) {
     this.service = service;
     this.mapper = mapper;
+    this.jp_score = jp_score;
   }
 
   [HttpGet]

@@ -130,6 +130,7 @@ public class AppDbContext : DbContext {
     cvEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
     cvEntity.Property(p => p.Title).IsRequired().HasMaxLength(256);
     cvEntity.Property(p => p.Data).IsRequired();
+    cvEntity.Property(p => p.Extract).IsRequired();
 
     var messageEntity = builder.Entity<Message>();
     messageEntity.ToTable("Message");
