@@ -23,8 +23,12 @@ public class PlanSubscriptionService : IPlanSubscriptionService {
 
   public async Task<PlanSubscriptionResponse> Create(PlanSubscription planSubscription) {
     try {
+      // Calcular el EndDate basado en el StartDate y la duración de la suscripción
+      planSubscription.EndDate = planSubscription.StartDate.AddDays(planSubscription.Subscription.Duration);
+      planSubscription.PayedDate = planSubscription.StartDate;
       await repository.Add(planSubscription);
       await unitOfWork.Complete();
+
       return new PlanSubscriptionResponse(planSubscription);
 
     } catch (Exception e) {

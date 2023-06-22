@@ -17,17 +17,8 @@ public class PlanSubscriptionRequest {
   [Required]
   public DateTime StartDate { get; set; }
 
-  [SwaggerSchema("SubscriptionPlan end date", Nullable = false)]
-  [Required]
-  public DateTime EndDate { get; set; }
-
   [SwaggerSchema("SubscriptionPlan payed amount", Nullable = false)]
   [Required]
   public float PayedAmount { get; set; }
-
-  [SwaggerSchema("SubscriptionPlan payed date", Nullable = false)]
-  [Required]
-  public DateTime PayedDate { get; set; }
-
 
 }

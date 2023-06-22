@@ -21,7 +21,7 @@ public class SubscriptionResource {
   public float Cost { get; set; }
 
   [SwaggerSchema("Subscription items", Nullable = false)]
-  public float Items { get; set; }
+  public string Items { get; set; } = string.Empty;
 
   [SwaggerSchema("Subscription type", Nullable = false)]
   public UserType SubscriptionType { get; set; }
