@@ -7,6 +7,9 @@ using WAW.API.Job.Domain.Models;
 using WAW.API.Job.Domain.Services;
 using WAW.API.Job.Resources;
 using WAW.API.Shared.Extensions;
+using WAW.API.JobPostScores.Domain.Models;
+using WAW.API.JobPostScores.Domain.Services;
+
 
 namespace WAW.API.Job.Controllers;
 
@@ -17,6 +20,7 @@ namespace WAW.API.Job.Controllers;
 [SwaggerTag("Create, read, update and delete Job Offers")]
 public class OffersController : ControllerBase {
   private readonly IOfferService service;
+  private readonly IJobPostScoreService jp_score;
   private readonly IMapper mapper;
 
   public OffersController(IOfferService service, IMapper mapper) {
@@ -30,6 +34,29 @@ public class OffersController : ControllerBase {
   public async Task<IEnumerable<OfferResource>> GetAll() {
     var offers = await service.ListAll();
     return mapper.Map<IEnumerable<Offer>, IEnumerable<OfferResource>>(offers);
+  }
+
+  [HttpGet("scores/{itProfessionalId}")]
+  [ProducesResponseType(typeof(IEnumerable<JobPostScore>), 200)]
+  [SwaggerResponse(200, "All job post scores for a given IT professional, ordered by score.", typeof(IEnumerable<JobPostScore>))]
+  public async Task<IActionResult> GetScoresForProfessional(long itProfessionalId) {
+    var offers = await service.ListAll();
+
+    foreach (var offer in offers) {
+      var jobPostScores = await jp_score.ListAll();
+      var existingScore =
+        jobPostScores.FirstOrDefault(jps => jps.JobOfferId == offer.Id && jps.ItProfessionalId == itProfessionalId);
+
+      if (existingScore != null) continue;
+      var jobPostScore = new JobPostScore {
+        JobOfferId = offer.Id, ItProfessionalId = itProfessionalId, Score = 0.0 
+      };
+      await jp_score.Create(jobPostScore);
+    }
+
+    var finalJobPostScores = (await jp_score.ListAll()).OrderByDescending(jps => jps.Score);
+
+    return Ok(finalJobPostScores);
   }
 
   [HttpPost]
