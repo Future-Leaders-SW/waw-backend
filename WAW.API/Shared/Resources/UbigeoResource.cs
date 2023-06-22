@@ -4,17 +4,17 @@ namespace WAW.API.Shared.Resources;
 
 public class UbigeoResource {
 
-  [SwaggerSchema("Ubigeo identifier", ReadOnly = true)]
+  [SwaggerSchema("Ubigeo identifier", Nullable = false, ReadOnly = false)]
   public long Id { get; set; }
 
-  [SwaggerSchema("Ubigeo departamento", Nullable = false)]
-  public string Departamento { get; set; } = String.Empty;
+  [SwaggerSchema("Ubigeo departamento", Nullable = true)]
+  public string? Departamento { get; set; }
 
-  [SwaggerSchema("Ubigeo provincia", Nullable = false)]
-  public string Provincia { get; set; } = String.Empty;
+  [SwaggerSchema("Ubigeo provincia", Nullable = true)]
+  public string? Provincia { get; set; } 
 
-  [SwaggerSchema("Ubigeo distrito", Nullable = false)]
-  public string Distrito { get; set; } = String.Empty;
+  [SwaggerSchema("Ubigeo distrito", Nullable = true)]
+  public string? Distrito { get; set; } 
 
 
 }

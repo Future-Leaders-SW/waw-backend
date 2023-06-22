@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Swashbuckle.AspNetCore.Annotations;
+using WAW.API.Shared.Resources;
 
 namespace WAW.API.Auth.Resources;
 
@@ -30,4 +31,7 @@ public class UserUpdateRequest {
 
   [SwaggerSchema("User profile picture", Nullable = true)]
   public ExternalImageRequest? Picture { get; set; }
+
+  [SwaggerSchema("User Ubigeo", Nullable = true)]
+  public UbigeoRequest? Ubigeo { get; set; }
 }
