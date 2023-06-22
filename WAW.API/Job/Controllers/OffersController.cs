@@ -20,13 +20,13 @@ namespace WAW.API.Job.Controllers;
 [SwaggerTag("Create, read, update and delete Job Offers")]
 public class OffersController : ControllerBase {
   private readonly IOfferService service;
-  private readonly IJobPostScoreService jp_score;
+  private readonly IJobPostScoreService jpScore;
   private readonly IMapper mapper;
 
-  public OffersController(IOfferService service, IMapper mapper) {
+  public OffersController(IOfferService service, IMapper mapper, IJobPostScoreService jpScore) {
     this.service = service;
     this.mapper = mapper;
-    this.jp_score = jp_score;
+    this.jpScore = jpScore;
   }
 
   [HttpGet]
@@ -44,7 +44,7 @@ public class OffersController : ControllerBase {
     var offers = await service.ListAll();
 
     foreach (var offer in offers) {
-      var jobPostScores = await jp_score.ListAll();
+      var jobPostScores = await jpScore.ListAll();
       var existingScore =
         jobPostScores.FirstOrDefault(jps => jps.JobOfferId == offer.Id && jps.ItProfessionalId == itProfessionalId);
 
@@ -52,10 +52,10 @@ public class OffersController : ControllerBase {
       var jobPostScore = new JobPostScore {
         JobOfferId = offer.Id, ItProfessionalId = itProfessionalId, Score = 0.0 
       };
-      await jp_score.Create(jobPostScore);
+      await jpScore.Create(jobPostScore);
     }
 
-    var finalJobPostScores = (await jp_score.ListAll()).OrderByDescending(jps => jps.Score);
+    var finalJobPostScores = (await jpScore.ListAll()).OrderByDescending(jps => jps.Score);
 
     return Ok(finalJobPostScores);
   }
