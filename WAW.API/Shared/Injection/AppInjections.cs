@@ -18,7 +18,7 @@ public static class AppInjections {
     SubscriptionInjections.Register(services);
     PlanSubscriptionInjections.Register(services);
     CvInjections.Register(services);
-
+    UbigeoInjections.Register(services);
     services.AddScoped<IUnitOfWork, UnitOfWork>();
   }
 }

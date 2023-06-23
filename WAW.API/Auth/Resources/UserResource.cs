@@ -38,7 +38,7 @@ public class UserResource {
   [SwaggerSchema("User profile picture", Nullable = true)]
   public ExternalImageResource? Picture { get; set; }
 
-  [SwaggerSchema("User Ubigeo", Nullable = false)]
+  [SwaggerSchema("User Ubigeo", Nullable = true)]
   public UbigeoResource? Ubigeo { get; set; }
 
   [SwaggerSchema("User type", Nullable = true)]

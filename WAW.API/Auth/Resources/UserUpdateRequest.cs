@@ -32,6 +32,6 @@ public class UserUpdateRequest {
   [SwaggerSchema("User profile picture", Nullable = true)]
   public ExternalImageRequest? Picture { get; set; }
 
-  [SwaggerSchema("User Ubigeo", Nullable = true)]
+  [SwaggerSchema("User Ubigeo", Nullable = false)]
   public UbigeoRequest? Ubigeo { get; set; }
 }
