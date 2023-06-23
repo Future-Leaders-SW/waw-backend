@@ -23,7 +23,7 @@ public class SubscriptionResource {
   [SwaggerSchema("Subscription items", Nullable = false)]
   public string Items { get; set; } = string.Empty;
 
-  [SwaggerSchema("Subscription type", Nullable = false)]
-  public UserType SubscriptionType { get; set; }
+  [SwaggerSchema("Subscription user type", Nullable = false)]
+  public UserType? SubscriptionType { get; set; }
 
 }

@@ -7,11 +7,11 @@ public class PlanSubscriptionRequest {
 
   [SwaggerSchema("SubscriptionPlan Subscription Id", Nullable = false)]
   [Required]
-  public string? SubscriptionId { get; set; }
+  public long? SubscriptionId { get; set; }
 
   [SwaggerSchema("SubscriptionPlan User Id", Nullable = false)]
   [Required]
-  public string? UserId { get; set; }
+  public long? UserId { get; set; }
 
   [SwaggerSchema("SubscriptionPlan start date", Nullable = false)]
   [Required]

@@ -25,8 +25,8 @@ public class SubscriptionRequest {
   [SwaggerSchema("Subscription items", Nullable = false)]
   [Required]
   public string Items { get; set; }
-  [SwaggerSchema("Subscription type", Nullable = false)]
+  [SwaggerSchema("Subscription user type", Nullable = false)]
   [Required]
-  public int SubscriptionType { get; set; }
+  public UserType? SubscriptionType { get; set; }
 
 }

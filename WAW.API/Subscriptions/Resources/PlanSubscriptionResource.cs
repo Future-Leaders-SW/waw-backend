@@ -8,10 +8,10 @@ public class PlanSubscriptionResource {
   [SwaggerSchema("SubscriptionPlan identifier", ReadOnly = true)]
   public long Id { get; set; }
 
-  [SwaggerSchema("SubscriptionPlan Subscription Id", Nullable = false)]
-  public SubscriptionResource? Subscriptiod { get; set; }
+  [SwaggerSchema("SubscriptionPlan Subscription", Nullable = false)]
+  public SubscriptionResource? Subscription { get; set; }
 
-  [SwaggerSchema("SubscriptionPlan User Id", Nullable = false)]
+  [SwaggerSchema("SubscriptionPlan User ", Nullable = false)]
   public UserResource? User { get; set; }
 
   [SwaggerSchema("SubscriptionPlan start date", Nullable = false)]

@@ -10,5 +10,6 @@ public class Subscription :BaseModel{
   public float Cost { get; set; }
   public string Items { get; set; } = string.Empty;
   public UserType SubscriptionType { get; set; }
-  public IList<PlanSubscription> PlanSubscriptions { get; set; } = null!;
+
+  public IList<PlanSubscription> PlanSubscriptions { get; set; } = new List<PlanSubscription>();
 }

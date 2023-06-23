@@ -34,7 +34,8 @@ public class User : BaseModel {
 
   public IList<ChatRoom> ChatRooms { get; set; } = new List<ChatRoom>();
 
-  public IList<PlanSubscription> PlanSubscriptions { get; set; }
+  public IList<PlanSubscription> PlanSubscriptions { get; set; } = new List<PlanSubscription>();
+
 
   public Ubigeo? Ubigeo { get; set; }
   public long? UbigeoId { get; set; }

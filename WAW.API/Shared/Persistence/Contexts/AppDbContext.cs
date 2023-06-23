@@ -168,7 +168,7 @@ public class AppDbContext : DbContext {
     userEntity.HasOne(p => p.Cover).WithOne().HasForeignKey<User>(p => p.CoverId);
     userEntity.HasOne(p => p.Picture).WithOne().HasForeignKey<User>(p => p.PictureId);
     userEntity.HasOne(p => p.Ubigeo).WithOne().HasForeignKey<User>(p => p.UbigeoId).OnDelete(DeleteBehavior.NoAction);
-    
+
 
 
     var educationEntity = builder.Entity<UserEducation>();
@@ -225,30 +225,21 @@ public class AppDbContext : DbContext {
     subscriptionEntity.Property(p => p.NamePlan).IsRequired().HasMaxLength(100);
     subscriptionEntity.Property(p=> p.Description).IsRequired().HasMaxLength(100);
     subscriptionEntity.Property(p => p.Duration).IsRequired();
-    subscriptionEntity.Property(P=> P.Cost).IsRequired();
-    subscriptionEntity.Property(P => P.Items).IsRequired();
-    subscriptionEntity.Property(P => P.SubscriptionType).IsRequired();
+    subscriptionEntity.Property(p=> p.Cost).IsRequired();
+    subscriptionEntity.Property(p => p.Items).IsRequired();
+    subscriptionEntity.Property(p => p.SubscriptionType).IsRequired();
 
     var planSubscriptionEntity = builder.Entity<PlanSubscription>();
     planSubscriptionEntity.ToTable("PlanSubscriptions");
-    planSubscriptionEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+    planSubscriptionEntity.Property(p => p.Id).IsRequired();
     planSubscriptionEntity.Property(p => p.StartDate).IsRequired();
     planSubscriptionEntity.Property(p => p.EndDate).IsRequired();
     planSubscriptionEntity.Property(p => p.PayedAmount).IsRequired();
     planSubscriptionEntity.Property(p => p.PayedDate).IsRequired();
 
-    builder.Entity<PlanSubscription>()
-    .HasKey(bc => new { bc.UserId, bc.SubscriptionId, bc.Id });
-
-    builder.Entity<PlanSubscription>()
-    .HasOne(bc => bc.User)
-    .WithMany(b => b.PlanSubscriptions)
-    .HasForeignKey(bc => bc.UserId);
-
-    builder.Entity<PlanSubscription>()
-    .HasOne(bc => bc.Subscription)
-    .WithMany(c => c.PlanSubscriptions)
-    .HasForeignKey(bc => bc.SubscriptionId);
+    planSubscriptionEntity.HasIndex(p => new { p.UserId, p.SubscriptionId }).IsUnique();
+    planSubscriptionEntity.HasOne(p => p.User).WithMany(p => p.PlanSubscriptions).HasForeignKey(p => p.UserId).IsRequired();
+    planSubscriptionEntity.HasOne(p => p.Subscription).WithMany(p => p.PlanSubscriptions).HasForeignKey(p => p.SubscriptionId).IsRequired();
 
 
 
