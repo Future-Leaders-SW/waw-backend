@@ -161,14 +161,15 @@ public class AppDbContext : DbContext {
     userEntity.Property(p => p.Birthdate).IsRequired();
     userEntity.Property(p => p.Password).IsRequired().HasMaxLength(60);
     userEntity.Property(p => p.UserType).IsRequired();
-    userEntity.Property(p => p.UbigeoId).IsRequired();
     userEntity.HasMany(p => p.ChatRooms).WithMany(p => p.Participants);
     userEntity.HasMany(p => p.Education).WithOne(p => p.User).HasForeignKey(p => p.UserId).IsRequired();
     userEntity.HasMany(p => p.Experience).WithOne(p => p.User).HasForeignKey(p => p.UserId).IsRequired();
     userEntity.HasMany(p => p.Projects).WithOne(p => p.User).HasForeignKey(p => p.UserId).IsRequired();
     userEntity.HasOne(p => p.Cover).WithOne().HasForeignKey<User>(p => p.CoverId);
     userEntity.HasOne(p => p.Picture).WithOne().HasForeignKey<User>(p => p.PictureId);
-    userEntity.HasOne(p => p.Ubigeo).WithOne().HasForeignKey<User>(p => p.UbigeoId).OnDelete(DeleteBehavior.NoAction);
+    userEntity.HasOne(p => p.Ubigeo).WithOne().HasForeignKey<User>(p => p.UbigeoId);
+    userEntity.HasOne(p => p.Cv).WithOne().HasForeignKey<User>(p => p.CvId);
+    
     
 
 

@@ -5,6 +5,10 @@ namespace WAW.API.Cvs.Resources;
 
 public class CvRequest {
   
+  [SwaggerSchema("Title of the CV", Nullable = false)]
+  [Required]
+  public string? Title { get; set; }
+  
   [SwaggerSchema("Cv data", Nullable = false)]
   [Required]
   public byte[]? Data { get; set; }

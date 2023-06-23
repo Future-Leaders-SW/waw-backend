@@ -40,5 +40,9 @@ public class User : BaseModel {
   public long? UbigeoId { get; set; }
 
   public UserType UserType { get; set; }
+  
+  public long? CvId { get; set; }
+  public Cv? Cv { get; set; }
+
 
 }

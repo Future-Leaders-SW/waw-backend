@@ -42,7 +42,10 @@ public class UserCreateRequest {
   public ExternalImageRequest? Picture { get; set; }
 
   [SwaggerSchema("User Ubigeo", Nullable = true)]
-  public UbigeoRequest? Ubigeo { get; set; }
+  public long? UbigeoId { get; set; }
+  
+  [SwaggerSchema("User cv", Nullable = true)]
+  public long? CvId { get; set; }
 
   [SwaggerSchema("User type", Nullable = true)]
   public UserType? UserType { get; set; }
