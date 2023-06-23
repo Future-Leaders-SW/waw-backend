@@ -35,28 +35,6 @@ public class UsersController : ControllerBase {
     return mapper.Map<UserResource>(user);
   }
 
-  // [HttpGet("me/experience")]
-  // public async Task<IEnumerable<UserExperienceResource>> GetUserExperience() {
-  //   var user = (User) HttpContext.Items["User"]!;
-  //   var experience = await service.ListExperienceByUser(user.Id);
-  //   if (experience == null) {
-  //     throw new Exception($"Unable to fetch experience list for logged in user: {user.Id}");
-  //   }
-  //
-  //   return mapper.Map<IEnumerable<UserExperience>, IEnumerable<UserExperienceResource>>(experience);
-  // }
-  //
-  // [HttpGet("me/projects")]
-  // public async Task<IEnumerable<UserProjectResource>> GetUserProjects() {
-  //   var user = (User) HttpContext.Items["User"]!;
-  //   var projects = await service.ListProjectsByUser(user.Id);
-  //   if (projects == null) {
-  //     throw new Exception($"Unable to fetch projects list for logged in user: {user.Id}");
-  //   }
-  //
-  //   return mapper.Map<IEnumerable<UserProject>, IEnumerable<UserProjectResource>>(projects);
-  // }
-
   [HttpPut("me")]
   [ProducesResponseType(typeof(UserResource), 200)]
   [ProducesResponseType(typeof(List<string>), 400)]
