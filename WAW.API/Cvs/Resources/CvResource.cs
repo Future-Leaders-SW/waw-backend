@@ -8,4 +8,7 @@ public class CvResource {
 
   [SwaggerSchema("Cv data", Nullable = false)]
   public byte[]? Data { get; set; }
+  
+  [SwaggerSchema("Cv extract", Nullable = false)]
+  public string? Extract { get; set; }
 }
