@@ -45,6 +45,7 @@ public class CvService : ICvService {
 
     current.Title = cv.Title;
     current.Data = cv.Data;
+    current.Extract = cv.Extract;
 
     try {
       repository.Update(current);

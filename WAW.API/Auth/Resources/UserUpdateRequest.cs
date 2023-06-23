@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Swashbuckle.AspNetCore.Annotations;
+using WAW.API.Cvs.Resources;
 using WAW.API.Shared.Resources;
 
 namespace WAW.API.Auth.Resources;
@@ -34,4 +35,7 @@ public class UserUpdateRequest {
 
   [SwaggerSchema("User Ubigeo", Nullable = false)]
   public UbigeoRequest? Ubigeo { get; set; }
+  
+  [SwaggerSchema("User cv", Nullable = false)]
+  public CvRequest? Cv { get; set; }
 }

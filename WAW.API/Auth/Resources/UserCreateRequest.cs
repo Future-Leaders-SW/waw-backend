@@ -43,6 +43,9 @@ public class UserCreateRequest {
 
   [SwaggerSchema("User Ubigeo", Nullable = true)]
   public long? UbigeoId { get; set; }
+  
+  [SwaggerSchema("User cv", Nullable = true)]
+  public long? CvId { get; set; }
 
   [SwaggerSchema("User type", Nullable = true)]
   public UserType? UserType { get; set; }

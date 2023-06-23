@@ -11,4 +11,7 @@ public class JobPostScoreResource {
 
   [SwaggerSchema("JobPostScore it professional id", Nullable = false)]
   public long ItProfessionalId { get; set; }
+  
+  [SwaggerSchema("JobPostScore score", Nullable = false)]
+  public double Score { get; set; }
 }

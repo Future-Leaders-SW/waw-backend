@@ -41,5 +41,9 @@ public class User : BaseModel {
   
 
   public UserType UserType { get; set; }
+  
+  public long? CvId { get; set; }
+  public Cv? Cv { get; set; }
+
 
 }

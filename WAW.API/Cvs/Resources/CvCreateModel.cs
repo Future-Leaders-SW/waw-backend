@@ -6,13 +6,13 @@ namespace WAW.API.Cvs.Resources;
 public class CvCreateModel {
   [SwaggerSchema("Title of the CV", Nullable = false)]
   [Required]
-  public string Title { get; set; }
-        
-  [SwaggerSchema("User ID associated with the CV", Nullable = false)]
-  [Required]
-  public long UserId { get; set; }
-
+  public string? Title { get; set; }
+  
   [SwaggerSchema("CV file", Nullable = false)]
   [Required]
-  public IFormFile Data { get; set; }
+  public IFormFile? Data { get; set; }
+  
+  [SwaggerSchema("CV extract", Nullable = false)]
+  [Required]
+  public string? Extract { get; set; }
 }

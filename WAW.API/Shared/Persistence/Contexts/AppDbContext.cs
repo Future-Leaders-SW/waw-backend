@@ -130,6 +130,7 @@ public class AppDbContext : DbContext {
     cvEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
     cvEntity.Property(p => p.Title).IsRequired().HasMaxLength(256);
     cvEntity.Property(p => p.Data).IsRequired();
+    cvEntity.Property(p => p.Extract).IsRequired();
 
     var messageEntity = builder.Entity<Message>();
     messageEntity.ToTable("Message");
@@ -167,6 +168,8 @@ public class AppDbContext : DbContext {
     userEntity.HasOne(p => p.Cover).WithOne().HasForeignKey<User>(p => p.CoverId);
     userEntity.HasOne(p => p.Picture).WithOne().HasForeignKey<User>(p => p.PictureId);
     userEntity.HasOne(p => p.Ubigeo).WithOne().HasForeignKey<User>(p => p.UbigeoId);
+    userEntity.HasOne(p => p.Cv).WithOne().HasForeignKey<User>(p => p.CvId);
+    
     
 
 
@@ -284,6 +287,7 @@ public class AppDbContext : DbContext {
     jobPotScoreEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
     jobPotScoreEntity.Property(p=>p.JobOfferId).IsRequired();
     jobPotScoreEntity.Property(p=>p.ItProfessionalId).IsRequired();
+    jobPotScoreEntity.Property(p=>p.Score).IsRequired();
     jobPotScoreEntity.HasOne(p => p.JobOffer).WithOne().HasForeignKey<JobPostScore>(p => p.JobOfferId).OnDelete(DeleteBehavior.Cascade);
     jobPotScoreEntity.HasOne(p => p.ItProfessional).WithOne().HasForeignKey<JobPostScore>(p => p.ItProfessionalId).OnDelete(DeleteBehavior.Cascade);
 
