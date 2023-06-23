@@ -49,6 +49,7 @@ public class UserRepository : BaseRepository, IUserRepository {
       .Include(u => u.Cover)
       .Include(u => u.Picture)
       .Include(u=> u.Ubigeo)
+      .Include(u => u.Cv)
       .FirstOrDefaultAsync();
   }
 
@@ -57,6 +58,7 @@ public class UserRepository : BaseRepository, IUserRepository {
       .Include(u => u.Cover)
       .Include(u => u.Picture)
       .Include(u => u.Ubigeo)
+      .Include(u => u.Cv)
       .FirstOrDefaultAsync();
   }
 
