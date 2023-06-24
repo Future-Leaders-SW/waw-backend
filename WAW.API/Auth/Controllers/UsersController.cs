@@ -47,7 +47,7 @@ public class UsersController : ControllerBase {
     if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
     var user = (User) HttpContext.Items["User"]!;
     var id = user.Id;
-
+    
     var result = await service.Update(id, resource);
     return result.ToResponse<UserResource>(this, mapper);
   }

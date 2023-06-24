@@ -1,4 +1,5 @@
 ﻿using Swashbuckle.AspNetCore.Annotations;
+using WAW.API.Cvs.Domain.Models;
 
 namespace WAW.API.JobPostScores.Resources;
 
@@ -10,7 +11,7 @@ public class JobPostScoreResource {
   public long JobOfferId { get; set; }
 
   [SwaggerSchema("JobPostScore it professional id", Nullable = false)]
-  public long ItProfessionalId { get; set; }
+  public Cv? CvId { get; set; }
   
   [SwaggerSchema("JobPostScore score", Nullable = false)]
   public double Score { get; set; }
