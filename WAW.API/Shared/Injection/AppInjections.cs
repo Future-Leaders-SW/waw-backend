@@ -2,6 +2,7 @@ using WAW.API.Auth.Injection;
 using WAW.API.Chat.Injection;
 using WAW.API.Companies.Injection;
 using WAW.API.Cvs.Injection;
+using WAW.API.Job.Domain.Models;
 using WAW.API.Job.Injection;
 using WAW.API.JobPostScores.Injection;
 using WAW.API.Shared.Domain.Repositories;

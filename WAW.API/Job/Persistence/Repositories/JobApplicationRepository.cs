@@ -31,7 +31,17 @@ public class JobApplicationRepository : BaseRepository, IJobApplicationRepositor
     await context.JobApplications.AddAsync(jobApplication);
   }
   public async Task<JobApplication?> GetById(long id) {
-    return await context.JobApplications.FindAsync(id);
+    return await context.JobApplications.Where(a => a.Id == id)
+    .Include(x => x.Offer)
+    .Include(x => x.User)
+    .FirstOrDefaultAsync();
+  }
+
+  public async Task<IEnumerable<JobApplication>> GetByUserId(long userId) {
+    return await context.JobApplications
+        .Where(a => a.UserId == userId)
+        .Include(x => x.Offer)
+        .ToListAsync();
   }
 
   public void Update(JobApplication jobApplication) {

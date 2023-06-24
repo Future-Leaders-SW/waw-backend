@@ -31,6 +31,20 @@ public class JobApplicationController : ControllerBase {
     var jobApplications = await service.ListAll();
     return mapper.Map<IEnumerable<JobApplication>, IEnumerable<JobApplicationResource>>(jobApplications);
   }
+
+
+  [HttpGet("/{userId}/offers")]
+  [ProducesResponseType(typeof(IEnumerable<OfferResource>), 200)]
+  [SwaggerResponse(200, "All the offers associated with the user were retrieved successfully.", typeof(IEnumerable<OfferResource>))]
+  public async Task<IActionResult> GetOffersByUserId(long userId) {
+    
+    var offers = await service.GetOffersByUserId(userId);
+    var offerResources = mapper.Map<IEnumerable<Offer>, IEnumerable<OfferResource>>(offers);
+    return Ok(offerResources);
+
+  }
+
+
   [HttpPost]
   [ProducesResponseType(typeof(JobApplicationResource), 200)]
   [ProducesResponseType(typeof(List<string>), 400)]

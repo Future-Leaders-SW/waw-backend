@@ -1,7 +1,11 @@
+using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
 using WAW.API.Job.Domain.Models;
 using WAW.API.Job.Domain.Repositories;
 using WAW.API.Job.Domain.Services;
 using WAW.API.Job.Domain.Services.Communication;
+using WAW.API.Job.Resources;
 using WAW.API.Shared.Domain.Repositories;
 
 namespace WAW.API.Job.Services;
@@ -9,16 +13,22 @@ namespace WAW.API.Job.Services;
 public class JobApplicationService : IJobApplicationService {
   private readonly IJobApplicationRepository _jobApplicationRepository;
   private readonly IUnitOfWork _unitOfWork;
+  private readonly IMapper _mapper;
 
-  public JobApplicationService(IJobApplicationRepository jobApplicationRepository, IUnitOfWork unitOfWork) {
+
+  public JobApplicationService(IJobApplicationRepository jobApplicationRepository, IUnitOfWork unitOfWork, IMapper mapper) {
     _jobApplicationRepository = jobApplicationRepository;
     _unitOfWork = unitOfWork;
+    _mapper = mapper;
   }
 
   public async Task<IEnumerable<JobApplication>> ListAll() {
     return await _jobApplicationRepository.ListAll();
   }
-
+  public async Task<IEnumerable<Offer>> GetOffersByUserId(long userId) {
+    var jobApplications = await _jobApplicationRepository.GetByUserId(userId);
+    return jobApplications.Select(j => j.Offer).ToList();
+}
   public async Task<JobApplicationResponse> Create(JobApplication request) {
     try {
       await _jobApplicationRepository.Add(request);
@@ -29,6 +39,8 @@ public class JobApplicationService : IJobApplicationService {
       return new JobApplicationResponse($"An error occurred when saving the job application: {ex.Message}");
     }
   }
+
+  
 
   public async Task<JobApplicationResponse> Update(long id, JobApplication request) {
     var existingJobApplication = await _jobApplicationRepository.GetById(id);

@@ -6,7 +6,7 @@ namespace WAW.API.Job.Domain.Services;
 public interface IJobApplicationService {
 
   Task<IEnumerable<JobApplication>> ListAll();
-  //Task<IList<JobApplication>> ListByUserId(long userId);
+  Task<IEnumerable<Offer>> GetOffersByUserId(long userId);
 
   //Task<IList<JobApplication>> ListByOfferId(long offerId);
 

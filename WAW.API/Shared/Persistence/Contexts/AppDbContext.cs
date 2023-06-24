@@ -30,6 +30,7 @@ public class AppDbContext : DbContext {
   private DbSet<ItProfessional>? itProfessional;
   private DbSet<Recruiter>? recruiters;
   private DbSet<JobPostScore>? jobPostScores;
+  private DbSet<JobApplication>? jobApplications;
 
   public DbSet<Offer> Offers {
     get => GetContext(offers);
@@ -110,6 +111,11 @@ public class AppDbContext : DbContext {
     set => jobPostScores = value;
   }
 
+  public DbSet<JobApplication> JobApplications {
+    get => GetContext(jobApplications);
+    set => jobApplications = value;
+  }
+
   public AppDbContext(DbContextOptions options) : base(options) {}
 
   protected override void OnModelCreating(ModelBuilder builder) {
@@ -149,6 +155,15 @@ public class AppDbContext : DbContext {
     offerEntity.Property(p => p.Status).IsRequired();
     offerEntity.Property(p => p.MinSalary).IsRequired();
     offerEntity.Property(p => p.MaxSalary).IsRequired();
+
+    var jobApplicationEntity = builder.Entity<JobApplication>();
+    jobApplicationEntity.ToTable("JobApplications");
+    jobApplicationEntity.HasKey(p => p.Id);
+    jobApplicationEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+    jobApplicationEntity.Property(p => p.ApplicationDate).IsRequired();
+    jobApplicationEntity.HasIndex(p => new { p.UserId, p.OfferId }).IsUnique();
+    jobApplicationEntity.HasOne(p => p.User).WithMany(p => p.JobApplications).HasForeignKey(p => p.UserId).IsRequired();
+    jobApplicationEntity.HasOne(p => p.Offer).WithMany(p => p.JobApplications).HasForeignKey(p => p.OfferId).IsRequired();
 
     var userEntity = builder.Entity<User>();
     userEntity.ToTable("Users");

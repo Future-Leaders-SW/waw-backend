@@ -12,7 +12,7 @@ public class JobApplicationResource {
   public UserResource? User { get; set; }
 
   [SwaggerSchema("The offer to which the job application is made.", Nullable = false)]
-  public OfferResource Offer { get; set; }
+  public OfferResource? Offer { get; set; }
 
   [SwaggerSchema("The date of the job application.", Nullable = false)]
   public DateTime ApplicationDate { get; set; }
