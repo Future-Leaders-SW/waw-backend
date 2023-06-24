@@ -9,5 +9,8 @@ public static class JobInjections {
   public static void Register(IServiceCollection services) {
     services.AddScoped<IOfferRepository, OfferRepository>();
     services.AddScoped<IOfferService, OfferService>();
+
+    services.AddScoped<IJobApplicationRepository, JobApplicationRepository>();
+    services.AddScoped<IJobApplicationService, JobApplicationService>();
   }
 }

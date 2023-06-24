@@ -7,5 +7,6 @@ namespace WAW.API.Job.Mapping;
 public static class JobResourceToModelProfile {
   public static void Register(IProfileExpression profile) {
     profile.CreateMap<OfferRequest, Offer>();
+    profile.CreateMap<JobApplicationRequest, JobApplication>();
   }
 }

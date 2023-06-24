@@ -3,7 +3,7 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace WAW.API.Job.Resources;
 
 public class OfferResource {
-  [SwaggerSchema("Job offer identifier", ReadOnly = true)]
+  [SwaggerSchema("Job offer identifier", Nullable = false,ReadOnly = true)]
   public long Id { get; set; }
 
   [SwaggerSchema("Job offer title", Nullable = false)]
