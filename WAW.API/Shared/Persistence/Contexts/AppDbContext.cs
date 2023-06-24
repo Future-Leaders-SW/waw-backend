@@ -85,6 +85,7 @@ public class AppDbContext : DbContext {
     get => GetContext(subscriptions);
     set => subscriptions = value;
   }
+
   public DbSet<PlanSubscription> PlanSubscriptions {
     get => GetContext(planSubscriptions);
     set => planSubscriptions = value;
@@ -169,8 +170,6 @@ public class AppDbContext : DbContext {
     userEntity.HasOne(p => p.Picture).WithOne().HasForeignKey<User>(p => p.PictureId);
     userEntity.HasOne(p => p.Ubigeo).WithOne().HasForeignKey<User>(p => p.UbigeoId);
     userEntity.HasOne(p => p.Cv).WithOne().HasForeignKey<User>(p => p.CvId);
-    
-    
 
 
     var educationEntity = builder.Entity<UserEducation>();
@@ -225,9 +224,9 @@ public class AppDbContext : DbContext {
     subscriptionEntity.HasKey(p => p.Id);
     subscriptionEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
     subscriptionEntity.Property(p => p.NamePlan).IsRequired().HasMaxLength(100);
-    subscriptionEntity.Property(p=> p.Description).IsRequired().HasMaxLength(100);
+    subscriptionEntity.Property(p => p.Description).IsRequired().HasMaxLength(100);
     subscriptionEntity.Property(p => p.Duration).IsRequired();
-    subscriptionEntity.Property(P=> P.Cost).IsRequired();
+    subscriptionEntity.Property(P => P.Cost).IsRequired();
     subscriptionEntity.Property(P => P.Items).IsRequired();
     subscriptionEntity.Property(P => P.SubscriptionType).IsRequired();
 
@@ -239,19 +238,17 @@ public class AppDbContext : DbContext {
     planSubscriptionEntity.Property(p => p.PayedAmount).IsRequired();
     planSubscriptionEntity.Property(p => p.PayedDate).IsRequired();
 
-    builder.Entity<PlanSubscription>()
-    .HasKey(bc => new { bc.UserId, bc.SubscriptionId, bc.Id });
+    builder.Entity<PlanSubscription>().HasKey(bc => new {bc.UserId, bc.SubscriptionId, bc.Id});
 
     builder.Entity<PlanSubscription>()
-    .HasOne(bc => bc.User)
-    .WithMany(b => b.PlanSubscriptions)
-    .HasForeignKey(bc => bc.UserId);
+      .HasOne(bc => bc.User)
+      .WithMany(b => b.PlanSubscriptions)
+      .HasForeignKey(bc => bc.UserId);
 
     builder.Entity<PlanSubscription>()
-    .HasOne(bc => bc.Subscription)
-    .WithMany(c => c.PlanSubscriptions)
-    .HasForeignKey(bc => bc.SubscriptionId);
-
+      .HasOne(bc => bc.Subscription)
+      .WithMany(c => c.PlanSubscriptions)
+      .HasForeignKey(bc => bc.SubscriptionId);
 
 
     var ubigeoEntity = builder.Entity<Ubigeo>();
@@ -268,29 +265,44 @@ public class AppDbContext : DbContext {
     itProfessionalEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
     itProfessionalEntity.Property(p => p.UserId).IsRequired();
     itProfessionalEntity.Property(p => p.CvId).IsRequired();
-    itProfessionalEntity.HasOne(p => p.User).WithOne().HasForeignKey<ItProfessional>(p => p.UserId).OnDelete(DeleteBehavior.Cascade);
-    itProfessionalEntity.HasOne(p => p.Cv).WithOne().HasForeignKey<ItProfessional>(p => p.CvId).OnDelete(DeleteBehavior.Cascade);
+    itProfessionalEntity.HasOne(p => p.User)
+      .WithOne()
+      .HasForeignKey<ItProfessional>(p => p.UserId)
+      .OnDelete(DeleteBehavior.Cascade);
+    itProfessionalEntity.HasOne(p => p.Cv)
+      .WithOne()
+      .HasForeignKey<ItProfessional>(p => p.CvId)
+      .OnDelete(DeleteBehavior.Cascade);
 
 
     var recruiterEntity = builder.Entity<Recruiter>();
     recruiterEntity.ToTable("Recruiters");
     recruiterEntity.HasKey(p => p.Id);
     recruiterEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-    recruiterEntity.Property(p=>p.UserId).IsRequired();
-    recruiterEntity.Property(p=>p.CompanyId).IsRequired();
-    recruiterEntity.HasOne(p => p.User).WithOne().HasForeignKey<Recruiter>(p => p.UserId).OnDelete(DeleteBehavior.Cascade);
-    recruiterEntity.HasOne(p => p.Company).WithOne().HasForeignKey<Recruiter>(p => p.CompanyId).OnDelete(DeleteBehavior.Cascade);
+    recruiterEntity.Property(p => p.UserId).IsRequired();
+    recruiterEntity.Property(p => p.CompanyId).IsRequired();
+    recruiterEntity.HasOne(p => p.User)
+      .WithOne()
+      .HasForeignKey<Recruiter>(p => p.UserId)
+      .OnDelete(DeleteBehavior.Cascade);
+    recruiterEntity.HasOne(p => p.Company)
+      .WithOne()
+      .HasForeignKey<Recruiter>(p => p.CompanyId)
+      .OnDelete(DeleteBehavior.Cascade);
 
-    var jobPotScoreEntity = builder.Entity<JobPostScore>();
-    jobPotScoreEntity.ToTable("JobPostScores");
-    jobPotScoreEntity.HasKey(p => p.Id);
-    jobPotScoreEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
-    jobPotScoreEntity.Property(p=>p.JobOfferId).IsRequired();
-    jobPotScoreEntity.Property(p=>p.ItProfessionalId).IsRequired();
-    jobPotScoreEntity.Property(p=>p.Score).IsRequired();
-    jobPotScoreEntity.HasOne(p => p.JobOffer).WithOne().HasForeignKey<JobPostScore>(p => p.JobOfferId).OnDelete(DeleteBehavior.Cascade);
-    jobPotScoreEntity.HasOne(p => p.ItProfessional).WithOne().HasForeignKey<JobPostScore>(p => p.ItProfessionalId).OnDelete(DeleteBehavior.Cascade);
-
+    var jobPostScoreEntity = builder.Entity<JobPostScore>();
+    jobPostScoreEntity.ToTable("JobPostScores");
+    jobPostScoreEntity.HasKey(p => p.Id);
+    jobPostScoreEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
+    jobPostScoreEntity.Property(p => p.Score).IsRequired();
+    jobPostScoreEntity.HasOne(p => p.JobOffer)
+      .WithOne()
+      .HasForeignKey<JobPostScore>(p => p.JobOfferId)
+      .OnDelete(DeleteBehavior.Cascade);
+    jobPostScoreEntity.HasOne(p => p.Cv)
+      .WithOne()
+      .HasForeignKey<JobPostScore>(p => p.CvId)
+      .OnDelete(DeleteBehavior.Cascade);
 
 
     builder.UseSnakeCase();

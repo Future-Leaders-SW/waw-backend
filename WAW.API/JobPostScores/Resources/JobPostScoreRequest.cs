@@ -10,7 +10,7 @@ public class JobPostScoreRequest {
 
   [SwaggerSchema("JobPostScore it professional id", Nullable = false)]
   [Required]
-  public long ItProfessionalId { get; set; }
+  public long CvId { get; set; }
   
   [SwaggerSchema("JobPostScore score", Nullable = false)]
   [Required]

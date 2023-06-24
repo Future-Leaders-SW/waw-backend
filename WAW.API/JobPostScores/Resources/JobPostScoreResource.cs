@@ -10,7 +10,7 @@ public class JobPostScoreResource {
   public long JobOfferId { get; set; }
 
   [SwaggerSchema("JobPostScore it professional id", Nullable = false)]
-  public long ItProfessionalId { get; set; }
+  public long CvId { get; set; }
   
   [SwaggerSchema("JobPostScore score", Nullable = false)]
   public double Score { get; set; }
