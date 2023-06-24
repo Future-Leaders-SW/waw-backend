@@ -95,7 +95,9 @@ public class UserService : IUserService {
     var current = await repository.FindById(id);
     if (current == null) return new UserResponse("User not found");
 
-    current.CopyFrom(request, new[] {"Id", "Email", "Password",});
+    current.CopyFrom(request, new[] {"Id", "Email", "Password", "FullName", "PreferredName", "Birthdate", "Location", "Biography", "About", "Picture", "Cover", "UserType", "CvId", "UbigeoId",});
+    current.CvId = request.CvId ?? current.CvId;
+    current.UbigeoId = request.UbigeoId ?? current.UbigeoId;
 
     try {
       repository.Update(current);
