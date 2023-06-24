@@ -310,14 +310,10 @@ public class AppDbContext : DbContext {
     jobPostScoreEntity.HasKey(p => p.Id);
     jobPostScoreEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
     jobPostScoreEntity.Property(p => p.Score).IsRequired();
-    jobPostScoreEntity.HasOne(p => p.JobOffer)
-      .WithOne()
-      .HasForeignKey<JobPostScore>(p => p.JobOfferId)
-      .OnDelete(DeleteBehavior.Cascade);
-    jobPostScoreEntity.HasOne(p => p.Cv)
-      .WithOne()
-      .HasForeignKey<JobPostScore>(p => p.CvId)
-      .OnDelete(DeleteBehavior.Cascade);
+    jobPostScoreEntity.HasOne(p => p.User).WithMany(p=>p.JobPostScores).HasForeignKey(p => p.UserId).IsRequired();
+    jobPostScoreEntity.HasOne(p => p.JobOffer).WithMany(p => p.JobPostScores).HasForeignKey(p => p.JobOfferId).IsRequired();
+
+
 
 
     builder.UseSnakeCase();

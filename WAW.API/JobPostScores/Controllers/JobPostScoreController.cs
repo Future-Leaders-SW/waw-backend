@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net.Mime;
@@ -7,6 +7,7 @@ using WAW.API.JobPostScores.Domain.Services;
 using WAW.API.JobPostScores.Resources;
 using WAW.API.Auth.Authorization.Attributes;
 using WAW.API.Shared.Extensions;
+using WAW.API.Job.Domain.Services;
 
 namespace WAW.API.JobPostScores.Controllers;
 
@@ -19,10 +20,12 @@ public class JobPostScoreController : ControllerBase{
 
   private readonly IJobPostScoreService service;
   private readonly IMapper mapper;
+  private readonly IOfferService offerService;
 
-  public JobPostScoreController(IJobPostScoreService service, IMapper mapper) {
+  public JobPostScoreController(IJobPostScoreService service, IOfferService offerService, IMapper mapper) {
     this.service = service;
     this.mapper = mapper;
+    this.offerService = offerService;
   }
 
   [HttpGet]
@@ -32,7 +35,23 @@ public class JobPostScoreController : ControllerBase{
     var jobPostScores = await service.ListAll();
     return mapper.Map<IEnumerable<JobPostScore>, IEnumerable<JobPostScoreResource>>(jobPostScores);
   }
+  
+/*  [HttpPost("/{userId}/scoreoffers")]
+  [ProducesResponseType(typeof(IEnumerable<JobPostScoreResource>), 200)]
+  [SwaggerResponse(200, "All the stored jobPostScores were retrieved successfully.", typeof(IEnumerable<JobPostScoreResource>))]
+  public async Task<IEnumerable<JobPostScoreResource>> GetAllScores() {
+    //get cv from user
 
+    //get all offers
+
+    //iterate through offers, get extract from the cv
+
+    
+    var offers = await offerService.ListAll();
+    //iterate through offers, get extract from the cv 
+    //return mapper.Map<IEnumerable<JobPostScore>, IEnumerable<JobPostScoreResource>>(jobApplications);
+  }
+*/
   [HttpPost]
   [ProducesResponseType(typeof(JobPostScoreResource), 200)]
   [ProducesResponseType(typeof(List<string>), 400)]
