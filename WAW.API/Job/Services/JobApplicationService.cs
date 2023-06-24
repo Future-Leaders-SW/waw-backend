@@ -12,14 +12,12 @@ namespace WAW.API.Job.Services;
 
 public class JobApplicationService : IJobApplicationService {
   private readonly IJobApplicationRepository _jobApplicationRepository;
-  private readonly IUnitOfWork _unitOfWork;
-  private readonly IMapper _mapper;
+  private readonly IUnitOfWork _unitOfWork; 
 
 
   public JobApplicationService(IJobApplicationRepository jobApplicationRepository, IUnitOfWork unitOfWork, IMapper mapper) {
     _jobApplicationRepository = jobApplicationRepository;
-    _unitOfWork = unitOfWork;
-    _mapper = mapper;
+    _unitOfWork = unitOfWork; 
   }
 
   public async Task<IEnumerable<JobApplication>> ListAll() {

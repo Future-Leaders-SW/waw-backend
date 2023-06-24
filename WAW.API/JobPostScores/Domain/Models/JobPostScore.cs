@@ -9,7 +9,7 @@ public class JobPostScore :BaseModel{
 
   public long? UserId { get; set; }
   public User? User { get; set; }
-  public long JobOfferId { get; set; }
-  public Offer? JobOffer { get; set; }
+  public long? OfferId { get; set; }
+  public Offer? Offer { get; set; }
   public double Score { get; set; }
 }

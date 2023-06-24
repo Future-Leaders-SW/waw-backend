@@ -11,8 +11,8 @@ using WAW.API.Shared.Persistence.Contexts;
 namespace WAW.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230624110649_EditNameColumnsJPScore")]
-    partial class EditNameColumnsJPScore
+    [Migration("20230624165715_UpdateJobPostScore")]
+    partial class UpdateJobPostScore
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -550,9 +550,10 @@ namespace WAW.API.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("id");
 
-                    b.Property<long>("JobOfferId")
+                    b.Property<long?>("OfferId")
+                        .IsRequired()
                         .HasColumnType("bigint")
-                        .HasColumnName("job_offer_id");
+                        .HasColumnName("offer_id");
 
                     b.Property<double>("Score")
                         .HasColumnType("double")
@@ -566,8 +567,8 @@ namespace WAW.API.Migrations
                     b.HasKey("Id")
                         .HasName("p_k_job_post_scores");
 
-                    b.HasIndex("JobOfferId")
-                        .HasDatabaseName("i_x_job_post_scores_job_offer_id");
+                    b.HasIndex("OfferId")
+                        .HasDatabaseName("i_x_job_post_scores_offer_id");
 
                     b.HasIndex("UserId")
                         .HasDatabaseName("i_x_job_post_scores_user_id");
@@ -894,12 +895,12 @@ namespace WAW.API.Migrations
 
             modelBuilder.Entity("WAW.API.JobPostScores.Domain.Models.JobPostScore", b =>
                 {
-                    b.HasOne("WAW.API.Job.Domain.Models.Offer", "JobOffer")
+                    b.HasOne("WAW.API.Job.Domain.Models.Offer", "Offer")
                         .WithMany("JobPostScores")
-                        .HasForeignKey("JobOfferId")
+                        .HasForeignKey("OfferId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("f_k_job_post_scores_offers_job_offer_id");
+                        .HasConstraintName("f_k_job_post_scores_offers_offer_id");
 
                     b.HasOne("WAW.API.Auth.Domain.Models.User", "User")
                         .WithMany("JobPostScores")
@@ -908,7 +909,7 @@ namespace WAW.API.Migrations
                         .IsRequired()
                         .HasConstraintName("f_k_job_post_scores_users_user_id");
 
-                    b.Navigation("JobOffer");
+                    b.Navigation("Offer");
 
                     b.Navigation("User");
                 });

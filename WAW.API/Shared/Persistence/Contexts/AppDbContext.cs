@@ -165,7 +165,7 @@ public class AppDbContext : DbContext {
     jobApplicationEntity.HasIndex(p => new { p.UserId, p.OfferId }).IsUnique();
     jobApplicationEntity.HasOne(p => p.User).WithMany(p => p.JobApplications).HasForeignKey(p => p.UserId).IsRequired();
     jobApplicationEntity.HasOne(p => p.Offer).WithMany(p => p.JobApplications).HasForeignKey(p => p.OfferId).IsRequired();
-
+     
     var userEntity = builder.Entity<User>();
     userEntity.ToTable("Users");
     userEntity.HasKey(p => p.Id);
@@ -310,10 +310,9 @@ public class AppDbContext : DbContext {
     jobPostScoreEntity.HasKey(p => p.Id);
     jobPostScoreEntity.Property(p => p.Id).IsRequired().ValueGeneratedOnAdd();
     jobPostScoreEntity.Property(p => p.Score).IsRequired();
+    jobApplicationEntity.HasIndex(p => new { p.UserId, p.OfferId });
     jobPostScoreEntity.HasOne(p => p.User).WithMany(p=>p.JobPostScores).HasForeignKey(p => p.UserId).IsRequired();
-    jobPostScoreEntity.HasOne(p => p.JobOffer).WithMany(p => p.JobPostScores).HasForeignKey(p => p.JobOfferId).IsRequired();
-
-
+    jobPostScoreEntity.HasOne(p => p.Offer).WithMany(p => p.JobPostScores).HasForeignKey(p => p.OfferId).IsRequired();
 
 
     builder.UseSnakeCase();

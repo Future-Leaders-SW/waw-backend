@@ -26,6 +26,7 @@ public class JobApplicationController : ControllerBase {
 
   [HttpGet]
   [ProducesResponseType(typeof(IEnumerable<JobApplicationResource>), 200)]
+  [ProducesResponseType(500)]
   [SwaggerResponse(200, "All the stored job applications were retrieved successfully.", typeof(IEnumerable<JobApplicationResource>))]
   public async Task<IEnumerable<JobApplicationResource>> GetAll() {
     var jobApplications = await service.ListAll();
