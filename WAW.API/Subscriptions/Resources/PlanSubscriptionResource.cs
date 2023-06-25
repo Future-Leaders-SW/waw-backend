@@ -1,5 +1,4 @@
 using Swashbuckle.AspNetCore.Annotations;
-using WAW.API.Auth.Domain.Services.Communication;
 using WAW.API.Auth.Resources;
 
 namespace WAW.API.Subscriptions.Resources;

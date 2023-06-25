@@ -6,6 +6,7 @@ using WAW.API.Auth.Authorization.Attributes;
 using WAW.API.Shared.Extensions;
 using WAW.API.Subscriptions.Domain.Models;
 using WAW.API.Subscriptions.Domain.Services;
+using WAW.API.Subscriptions.Domain.Services.Communication;
 using WAW.API.Subscriptions.Resources;
 
 namespace WAW.API.Subscriptions.Controllers;
@@ -34,6 +35,15 @@ public class PlanSubscriptionController : ControllerBase {
     return mapper.Map<IEnumerable<PlanSubscription>, IEnumerable<PlanSubscriptionResource>>(planSubscriptions);
   }
 
+  [HttpGet("{userId:int}")]
+  [ProducesResponseType(typeof(IEnumerable<PlanSubscription>), 200)]
+  [SwaggerResponse(200, "All the stored plan subscriptions for the user were retrieved successfully.", typeof(IEnumerable<PlanSubscriptionResource>))]
+  public async Task<IEnumerable<PlanSubscriptionResource>> GetPlanSubscriptionsByUserId([FromRoute][SwaggerParameter("Plan Subscription identifier", Required = true)] int userId
+  )
+  {
+    var planSubscriptions = await service.GetPlanSubscriptionsByUserId(userId);
+    return mapper.Map<IEnumerable<PlanSubscription>, IEnumerable<PlanSubscriptionResource>>(planSubscriptions);
+  }
 
   [HttpPost]
   [ProducesResponseType(typeof(PlanSubscriptionResource), 200)]

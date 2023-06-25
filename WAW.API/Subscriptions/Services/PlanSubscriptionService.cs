@@ -60,6 +60,25 @@ public class PlanSubscriptionService : IPlanSubscriptionService {
       return new PlanSubscriptionResponse($"An error occurred while deleting the plan subscription: {e.Message}");
     }
   }
+
+  public async Task<List<PlanSubscription>> GetPlanSubscriptionsByUserId(long userId) {
+    try
+    {
+      List<PlanSubscription> planSubscriptions = await repository.GetPlanSubscriptionsByUserId(userId);
+
+      if (planSubscriptions != null && planSubscriptions.Count > 0)
+      {
+        return planSubscriptions;
+      }
+
+      return new List<PlanSubscription>();
+    }
+    catch (Exception ex)
+    {
+      throw new Exception($"Ocurrió un error al obtener las PlanSubscriptions: {ex.Message}");
+    }
+  }
+
   public async Task<PlanSubscriptionResponse> Update(long id, PlanSubscription planSubscription) {
     var current = await repository.FindById(id);
     if (current == null)

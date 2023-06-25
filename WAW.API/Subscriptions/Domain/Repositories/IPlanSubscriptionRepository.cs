@@ -16,4 +16,6 @@ public interface IPlanSubscriptionRepository {
 
   Task<PlanSubscription> FindById(long id);
 
+  Task<List<PlanSubscription>> GetPlanSubscriptionsByUserId(long userId);
+
 }
