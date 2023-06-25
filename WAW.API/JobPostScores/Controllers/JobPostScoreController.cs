@@ -69,7 +69,7 @@ public class JobPostScoreController : ControllerBase{
     {
       using (var httpClient = new HttpClient())
       {
-        var apiUrl = "https://nlp-api-test-6zcqyqd5qa-uc.a.run.app/nlpservice/";
+        var apiUrl = "https://nlp-api-fv-6zcqyqd5qa-uc.a.run.app/nlpservice/";
             
         foreach (var offer in offers)
         {

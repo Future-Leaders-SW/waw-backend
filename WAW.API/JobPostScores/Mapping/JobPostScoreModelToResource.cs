@@ -10,6 +10,16 @@ public static class JobPostScoreModelToResource {
   public static void Register(IProfileExpression profile) {
     profile.CreateMap<JobPostScore, JobPostScoreResource>()
       .ForMember(dest => dest.UserId, opt => opt.MapFrom(src => new UserResource { Id = src.UserId ?? 0 }))
-      .ForMember(dest => dest.OfferId, opt => opt.MapFrom(src => new OfferResource { Id = src.OfferId ?? 0 }));
+      .ForMember(dest => dest.OfferId, opt => opt.MapFrom(src => new OfferResource {
+        Id = src.OfferId ?? 0,
+        Title = src.Offer.Title,
+        Image = src.Offer.Image,
+        Description = src.Offer.Description,
+        MinSalary = src.Offer.MinSalary,
+        MaxSalary = src.Offer.MaxSalary,
+        Status = src.Offer.Status
+
+      }));
+
   }
 }
