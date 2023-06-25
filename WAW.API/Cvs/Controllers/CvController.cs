@@ -111,4 +111,20 @@ public class CvController : ControllerBase {
     await service.Delete(id);
     return NoContent();
   }
+  
+  //GetExtractByCvId
+  [HttpGet("{id}/extract")]
+  [ProducesResponseType(typeof(string), 200)]
+  [SwaggerResponse(200, "The Cv extract was retrieved successfully", typeof(string))]
+  [SwaggerResponse(404, "The Cv extract was not found")]
+  public async Task<IActionResult> GetExtract(long id)
+  {
+    var extract = await service.GetExtractByCvId(id);
+    if (extract == null)
+    {
+      return NotFound("The Cv extract was not found");
+    }
+    return Ok(extract);
+  }
+  
 }

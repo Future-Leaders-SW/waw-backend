@@ -74,4 +74,18 @@ public class UsersController : ControllerBase {
     var result = await service.Register(user);
     return result.ToResponse<UserResource>(this, mapper);
   }
+  //get cv by user id
+  [HttpGet("{userId}/cvid")]
+  [ProducesResponseType(typeof(string), 200)]
+  [ProducesResponseType(typeof(List<string>), 400)]
+  [ProducesResponseType(500)]
+  [SwaggerResponse(200, "The cv was retrieved successfully", typeof(string))]
+  [SwaggerResponse(400, "The cv data is invalid")]
+  public async Task<IActionResult> GetCvIdByUserId(long userId) {
+    if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
+    var cv = await service.GetCvIdByUserId(userId);
+    return Ok(cv);
+  }
+
+
 }

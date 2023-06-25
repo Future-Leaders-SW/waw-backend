@@ -125,4 +125,8 @@ public class UserService : IUserService {
       return new UserResponse($"An error occurred while updating the user: {e.Message}");
     }
   }
+  public async Task<long> GetCvIdByUserId(long userId) {
+    var user = await repository.FindById(userId);
+    return user?.CvId ?? 0;
+  }
 }

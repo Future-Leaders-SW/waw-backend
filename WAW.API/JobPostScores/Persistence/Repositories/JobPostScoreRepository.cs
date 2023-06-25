@@ -11,6 +11,10 @@ public class JobPostScoreRepository :BaseRepository,IJobPostScoreRepository {
   public async Task<IEnumerable<JobPostScore>> ListAll() {
     return await context.JobPostScores.ToListAsync();
   }
+  
+  public async Task<IEnumerable<JobPostScore>> ListAllByUserId(long userId) {
+    return await context.JobPostScores.Where(x => x.UserId == userId).ToListAsync();
+  }
 
   public async Task Add(JobPostScore jobPostScore) {
     await context.JobPostScores.AddAsync(jobPostScore);
