@@ -165,7 +165,7 @@ public class AppDbContext : DbContext {
     jobApplicationEntity.HasIndex(p => new { p.UserId, p.OfferId }).IsUnique();
     jobApplicationEntity.HasOne(p => p.User).WithMany(p => p.JobApplications).HasForeignKey(p => p.UserId).IsRequired();
     jobApplicationEntity.HasOne(p => p.Offer).WithMany(p => p.JobApplications).HasForeignKey(p => p.OfferId).IsRequired();
-     
+
     var userEntity = builder.Entity<User>();
     userEntity.ToTable("Users");
     userEntity.HasKey(p => p.Id);
@@ -243,7 +243,6 @@ public class AppDbContext : DbContext {
     subscriptionEntity.Property(p => p.Duration).IsRequired();
     subscriptionEntity.Property(P => P.Cost).IsRequired();
     subscriptionEntity.Property(P => P.Items).IsRequired();
-    subscriptionEntity.Property(P => P.SubscriptionType).IsRequired();
 
     var planSubscriptionEntity = builder.Entity<PlanSubscription>();
     planSubscriptionEntity.ToTable("PlanSubscriptions");
