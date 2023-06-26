@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net.Mime;
@@ -24,7 +24,7 @@ public class ItProfessionalController : ControllerBase{
     this.service = service;
     this.mapper = mapper;
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpGet]
   [ProducesResponseType(typeof(IEnumerable<ItProfessionalResource>), 200)]
   [SwaggerResponse(200, "All the stored iTProfessionals were retrieved successfully.", typeof(IEnumerable<ItProfessionalResource>))]
@@ -32,7 +32,7 @@ public class ItProfessionalController : ControllerBase{
     var iTProfessionals = await service.ListAll();
     return mapper.Map<IEnumerable<ItProfessional>, IEnumerable<ItProfessionalResource>>(iTProfessionals);
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpPost]
   [ProducesResponseType(typeof(ItProfessionalResource), 200)]
   [ProducesResponseType(typeof(List<string>), 400)]
@@ -47,7 +47,7 @@ public class ItProfessionalController : ControllerBase{
     var result = await service.Create(iTProfessional);
     return result.ToResponse<ItProfessionalResource>(this, mapper);
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpPut("{id:int}")]
   [ProducesResponseType(typeof(ItProfessionalResource), 200)]
   [ProducesResponseType(typeof(List<string>), 400)]
@@ -65,7 +65,7 @@ public class ItProfessionalController : ControllerBase{
     var result = await service.Update(id, iTProfessional);
     return result.ToResponse<ItProfessionalResource>(this, mapper);
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpDelete("{id:int}")]
   [ProducesResponseType(typeof(NoContentResult), 204)]
   [ProducesResponseType(typeof(List<string>), 400)]

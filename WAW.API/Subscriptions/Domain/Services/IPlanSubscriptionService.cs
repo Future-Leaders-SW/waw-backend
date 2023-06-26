@@ -13,4 +13,6 @@ public interface IPlanSubscriptionService {
 
   Task<PlanSubscriptionResponse> Delete(long id);
 
+  Task<List<PlanSubscription>> GetPlanSubscriptionsByUserId(long userId);
+
 }

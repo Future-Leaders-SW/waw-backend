@@ -9,4 +9,5 @@ public interface ICvService {
   Task<CvResponse> Create(Cv cv);
   Task<CvResponse> Update(long id, Cv cv);
   Task<CvResponse> Delete(long id);
+  Task<string> GetExtractByCvId(long cvId);
 }

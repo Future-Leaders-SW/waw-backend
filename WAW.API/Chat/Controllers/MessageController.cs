@@ -21,7 +21,7 @@ public class MessageController : ControllerBase {
     this.service = service;
     this.mapper = mapper;
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpGet]
   [ProducesResponseType(typeof(IEnumerable<MessageResource>), 200)]
   [SwaggerResponse(200, "All the stored messages were retrieved successfully", typeof(MessageResource))]
@@ -29,7 +29,7 @@ public class MessageController : ControllerBase {
     var messages = await service.ListAll();
     return mapper.Map<IEnumerable<Message>, IEnumerable<MessageResource>>(messages);
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpPost]
   [ProducesResponseType(typeof(MessageResource), 200)]
   [ProducesResponseType(typeof(List<string>), 400)]
@@ -45,7 +45,7 @@ public class MessageController : ControllerBase {
     var result = await service.Create(message);
     return result.ToResponse<MessageResource>(this, mapper);
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpDelete("{id:long}")]
   [ProducesResponseType(typeof(NoContentResult), 204)]
   [ProducesResponseType(typeof(List<string>), 400)]

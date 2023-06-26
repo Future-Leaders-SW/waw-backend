@@ -26,7 +26,7 @@ public class ChatRoomController : ControllerBase {
     this.userService = userService;
     this.mapper = mapper;
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpGet]
   [ProducesResponseType(typeof(IEnumerable<ChatRoomResource>), 200)]
   [SwaggerResponse(200, "All the stored chat room were retrieved successfully.", typeof(IEnumerable<ChatRoomResource>))]
@@ -34,7 +34,7 @@ public class ChatRoomController : ControllerBase {
     var chatRooms = await chatService.ListAll();
     return mapper.Map<IEnumerable<ChatRoom>, IEnumerable<ChatRoomResource>>(chatRooms);
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpGet("{id:long}/messages")]
   [ProducesResponseType(typeof(IEnumerable<MessageResource>), 200)]
   [ProducesResponseType(404)]
@@ -51,7 +51,7 @@ public class ChatRoomController : ControllerBase {
     var mapped = mapper.Map<IEnumerable<Message>, IEnumerable<MessageResource>>(messages);
     return Ok(mapped);
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpGet("{id:long}/participants")]
   [ProducesResponseType(typeof(IEnumerable<UserResource>), 200)]
   [ProducesResponseType(404)]
@@ -68,7 +68,7 @@ public class ChatRoomController : ControllerBase {
     var mapped = mapper.Map<IEnumerable<User>, IEnumerable<UserResource>>(participants);
     return Ok(mapped);
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpPost]
   [ProducesResponseType(typeof(ChatRoomResource), 200)]
   [ProducesResponseType(typeof(List<string>), 400)]
@@ -89,7 +89,7 @@ public class ChatRoomController : ControllerBase {
     var result = await chatService.Create(chatRoom);
     return result.ToResponse<ChatRoomResource>(this, mapper);
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpPut("{id:long}")]
   [ProducesResponseType(typeof(ChatRoomResource), 200)]
   [ProducesResponseType(typeof(List<string>), 400)]
@@ -112,7 +112,7 @@ public class ChatRoomController : ControllerBase {
     var result = await chatService.Update(id, chatRoom);
     return result.ToResponse<ChatRoomResource>(this, mapper);
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpDelete("{id:long}")]
   [ProducesResponseType(typeof(NoContentResult), 204)]
   [ProducesResponseType(typeof(List<string>), 400)]

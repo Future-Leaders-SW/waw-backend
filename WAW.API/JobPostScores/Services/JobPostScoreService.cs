@@ -19,6 +19,10 @@ public class JobPostScoreService :IJobPostScoreService {
   public Task<IEnumerable<JobPostScore>> ListAll() {
     return repository.ListAll();
   }
+  
+  public Task<IEnumerable<JobPostScore>> ListAllByUserId(long userId) {
+    return repository.ListAllByUserId(userId);
+  }
 
   public async Task<JobPostScoreResponse> Create(JobPostScore jobPostScore) {
     try {

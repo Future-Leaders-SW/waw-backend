@@ -1,16 +1,15 @@
 using System.ComponentModel.DataAnnotations;
 using Swashbuckle.AspNetCore.Annotations;
+using WAW.API.Cvs.Resources;
 using WAW.API.Shared.Resources;
 
 namespace WAW.API.Auth.Resources;
 
 public class UserUpdateRequest {
   [SwaggerSchema("User fullname", Nullable = false)]
-  [Required]
   public string? FullName { get; set; }
 
   [SwaggerSchema("User preferred name to use in the app", Nullable = false)]
-  [Required]
   public string? PreferredName { get; set; }
 
   [SwaggerSchema("User location", Nullable = true)]
@@ -23,7 +22,6 @@ public class UserUpdateRequest {
   public string? About { get; set; }
 
   [SwaggerSchema("User birthdate", Nullable = false)]
-  [Required]
   public DateTime? Birthdate { get; set; }
 
   [SwaggerSchema("User cover picture", Nullable = true)]
@@ -33,5 +31,8 @@ public class UserUpdateRequest {
   public ExternalImageRequest? Picture { get; set; }
 
   [SwaggerSchema("User Ubigeo", Nullable = true)]
-  public UbigeoRequest? Ubigeo { get; set; }
+  public long? UbigeoId { get; set; }
+
+  [SwaggerSchema("User cv", Nullable = true)]
+  public long? CvId { get; set; }
 }

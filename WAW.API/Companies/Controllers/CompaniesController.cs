@@ -23,7 +23,7 @@ public class CompaniesController : ControllerBase {
     this.service = service;
     this.mapper = mapper;
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpGet]
   [ProducesResponseType(typeof(IEnumerable<CompanyResource>), 200)]
   [SwaggerResponse(200, "All the stored companies were retrieved successfully.", typeof(IEnumerable<CompanyResource>))]
@@ -31,7 +31,7 @@ public class CompaniesController : ControllerBase {
     var companies = await service.ListAll();
     return mapper.Map<IEnumerable<Company>, IEnumerable<CompanyResource>>(companies);
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpPost]
   [ProducesResponseType(typeof(CompanyResource), 201)]
   [ProducesResponseType(typeof(List<string>), 400)]
@@ -47,7 +47,7 @@ public class CompaniesController : ControllerBase {
     var result = await service.Create(company);
     return result.ToResponse<CompanyResource>(this, mapper);
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpPut("{id:int}")]
   [ProducesResponseType(typeof(CompanyResource), 200)]
   [ProducesResponseType(typeof(List<string>), 400)]
@@ -65,7 +65,7 @@ public class CompaniesController : ControllerBase {
     var result = await service.Update(id, company);
     return result.ToResponse<CompanyResource>(this, mapper);
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpDelete("{id:int}")]
   [ProducesResponseType(typeof(NoContentResult), 204)]
   [ProducesResponseType(typeof(List<string>), 400)]

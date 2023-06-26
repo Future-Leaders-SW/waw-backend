@@ -4,7 +4,7 @@ using WAW.API.Subscriptions.Resources;
 
 namespace WAW.API.Subscriptions.Mapping;
 
-public class PlanSubscriptionResourceToModelProfile {
+public static class PlanSubscriptionResourceToModelProfile {
 
   public static void Register(IProfileExpression profile) {
     profile.CreateMap<PlanSubscriptionRequest, PlanSubscription>();

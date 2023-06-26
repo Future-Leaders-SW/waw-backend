@@ -14,4 +14,6 @@ public interface IUserService {
   Task<IList<User>?> BatchFindById(IEnumerable<long> ids);
   Task<UserResponse> Register(User user);
   Task<UserResponse> Update(long id, UserUpdateRequest user);
+  //GetCvIdByUserId
+  Task<long> GetCvIdByUserId(long userId);
 }

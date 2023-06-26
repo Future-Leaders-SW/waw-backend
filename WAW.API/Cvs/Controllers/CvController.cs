@@ -57,7 +57,6 @@ public class CvController : ControllerBase {
     return File(cv.Data, "application/pdf", cv.Title);
   }
 
-
   [HttpPost]
   [ProducesResponseType(typeof(CvResource), 200)]
   [ProducesResponseType(typeof(List<string>), 400)]
@@ -75,7 +74,8 @@ public class CvController : ControllerBase {
     var cv = new Cv
     {
       Title = cvCreateModel.Title,
-      Data = memoryStream.ToArray()
+      Data = memoryStream.ToArray(),
+      Extract = cvCreateModel.Extract,
     };
 
     var result = await service.Create(cv);
@@ -111,4 +111,20 @@ public class CvController : ControllerBase {
     await service.Delete(id);
     return NoContent();
   }
+  
+  //GetExtractByCvId
+  [HttpGet("{id}/extract")]
+  [ProducesResponseType(typeof(string), 200)]
+  [SwaggerResponse(200, "The Cv extract was retrieved successfully", typeof(string))]
+  [SwaggerResponse(404, "The Cv extract was not found")]
+  public async Task<IActionResult> GetExtract(long id)
+  {
+    var extract = await service.GetExtractByCvId(id);
+    if (extract == null)
+    {
+      return NotFound("The Cv extract was not found");
+    }
+    return Ok(extract);
+  }
+  
 }

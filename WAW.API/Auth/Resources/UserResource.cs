@@ -1,5 +1,6 @@
 using Swashbuckle.AspNetCore.Annotations;
 using WAW.API.Auth.Domain.Models;
+using WAW.API.Cvs.Resources;
 using WAW.API.Shared.Resources;
 
 namespace WAW.API.Auth.Resources;
@@ -38,8 +39,11 @@ public class UserResource {
   [SwaggerSchema("User profile picture", Nullable = true)]
   public ExternalImageResource? Picture { get; set; }
 
-  [SwaggerSchema("User Ubigeo", Nullable = false)]
+  [SwaggerSchema("User Ubigeo", Nullable = true)]
   public UbigeoResource? Ubigeo { get; set; }
+  
+  [SwaggerSchema("User cv", Nullable = false)]
+  public CvResource? Cv { get; set; }
 
   [SwaggerSchema("User type", Nullable = true)]
   public UserType? UserType { get; set; }

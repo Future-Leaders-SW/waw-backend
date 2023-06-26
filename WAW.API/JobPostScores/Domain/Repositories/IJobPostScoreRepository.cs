@@ -5,6 +5,8 @@ namespace WAW.API.JobPostScores.Domain.Repositories;
 public interface IJobPostScoreRepository {
 
   Task<IEnumerable<JobPostScore>> ListAll();
+  
+  Task<IEnumerable<JobPostScore>> ListAllByUserId(long userId);
 
   Task Add(JobPostScore jobPostScore);
 

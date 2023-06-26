@@ -35,28 +35,6 @@ public class UsersController : ControllerBase {
     return mapper.Map<UserResource>(user);
   }
 
-  // [HttpGet("me/experience")]
-  // public async Task<IEnumerable<UserExperienceResource>> GetUserExperience() {
-  //   var user = (User) HttpContext.Items["User"]!;
-  //   var experience = await service.ListExperienceByUser(user.Id);
-  //   if (experience == null) {
-  //     throw new Exception($"Unable to fetch experience list for logged in user: {user.Id}");
-  //   }
-  //
-  //   return mapper.Map<IEnumerable<UserExperience>, IEnumerable<UserExperienceResource>>(experience);
-  // }
-  //
-  // [HttpGet("me/projects")]
-  // public async Task<IEnumerable<UserProjectResource>> GetUserProjects() {
-  //   var user = (User) HttpContext.Items["User"]!;
-  //   var projects = await service.ListProjectsByUser(user.Id);
-  //   if (projects == null) {
-  //     throw new Exception($"Unable to fetch projects list for logged in user: {user.Id}");
-  //   }
-  //
-  //   return mapper.Map<IEnumerable<UserProject>, IEnumerable<UserProjectResource>>(projects);
-  // }
-
   [HttpPut("me")]
   [ProducesResponseType(typeof(UserResource), 200)]
   [ProducesResponseType(typeof(List<string>), 400)]
@@ -69,7 +47,7 @@ public class UsersController : ControllerBase {
     if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
     var user = (User) HttpContext.Items["User"]!;
     var id = user.Id;
-
+    
     var result = await service.Update(id, resource);
     return result.ToResponse<UserResource>(this, mapper);
   }
@@ -96,4 +74,18 @@ public class UsersController : ControllerBase {
     var result = await service.Register(user);
     return result.ToResponse<UserResource>(this, mapper);
   }
+  //get cv by user id
+  [HttpGet("{userId}/cvid")]
+  [ProducesResponseType(typeof(string), 200)]
+  [ProducesResponseType(typeof(List<string>), 400)]
+  [ProducesResponseType(500)]
+  [SwaggerResponse(200, "The cv was retrieved successfully", typeof(string))]
+  [SwaggerResponse(400, "The cv data is invalid")]
+  public async Task<IActionResult> GetCvIdByUserId(long userId) {
+    if (!ModelState.IsValid) return BadRequest(ModelState.GetErrorMessages());
+    var cv = await service.GetCvIdByUserId(userId);
+    return Ok(cv);
+  }
+
+
 }

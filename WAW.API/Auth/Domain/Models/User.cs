@@ -3,6 +3,8 @@ using WAW.API.Chat.Domain.Models;
 using WAW.API.Shared.Domain.Model;
 using WAW.API.Subscriptions.Domain.Models;
 using WAW.API.Cvs.Domain.Models;
+using WAW.API.Job.Domain.Models;
+using WAW.API.JobPostScores.Domain.Models;
 
 namespace WAW.API.Auth.Domain.Models;
 
@@ -36,9 +38,18 @@ public class User : BaseModel {
 
   public IList<PlanSubscription> PlanSubscriptions { get; set; }
 
-  public Ubigeo? Ubigeo { get; set; }
   public long? UbigeoId { get; set; }
+  public Ubigeo? Ubigeo { get; set; }
+
 
   public UserType UserType { get; set; }
+
+  public IList<JobApplication> JobApplications { get; set; } = new List<JobApplication>();
+
+  public IList<JobPostScore> JobPostScores { get; set; } = new List<JobPostScore>();
+  // Include CV
+  public long? CvId { get; set; }
+  public Cv? Cv { get; set; }
+
 
 }

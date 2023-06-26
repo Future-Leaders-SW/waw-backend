@@ -19,6 +19,13 @@ public class PlanSubscriptionRepository : BaseRepository, IPlanSubscriptionRepos
       .FirstOrDefaultAsync();
   }
 
+  public async Task<List<PlanSubscription>> GetPlanSubscriptionsByUserId(long userId) {
+    return await context.PlanSubscriptions
+      .Where(ps => ps.UserId == userId)
+      .Include(x=>x.Subscription)
+      .ToListAsync();
+  }
+
   public async Task<PlanSubscription?> FindBySubscriptionIdAndUserId(long subscriptionId, long userId) {
     return await context.PlanSubscriptions.FindAsync(subscriptionId, userId);
   }

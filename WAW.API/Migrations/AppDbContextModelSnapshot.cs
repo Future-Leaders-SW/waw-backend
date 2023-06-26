@@ -85,6 +85,10 @@ namespace WAW.API.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("cover_id");
 
+                    b.Property<long?>("CvId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("cv_id");
+
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasMaxLength(254)
@@ -124,7 +128,6 @@ namespace WAW.API.Migrations
                         .HasColumnName("profile_views");
 
                     b.Property<long?>("UbigeoId")
-                        .IsRequired()
                         .HasColumnType("bigint")
                         .HasColumnName("ubigeo_id");
 
@@ -138,6 +141,10 @@ namespace WAW.API.Migrations
                     b.HasIndex("CoverId")
                         .IsUnique()
                         .HasDatabaseName("i_x_users_cover_id");
+
+                    b.HasIndex("CvId")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_users_cv_id");
 
                     b.HasIndex("PictureId")
                         .IsUnique()
@@ -413,6 +420,11 @@ namespace WAW.API.Migrations
                         .HasColumnType("longblob")
                         .HasColumnName("data");
 
+                    b.Property<string>("Extract")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("extract");
+
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasMaxLength(256)
@@ -452,6 +464,40 @@ namespace WAW.API.Migrations
                         .HasDatabaseName("i_x_it_professionals_user_id");
 
                     b.ToTable("it_professionals", (string)null);
+                });
+
+            modelBuilder.Entity("WAW.API.Job.Domain.Models.JobApplication", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("id");
+
+                    b.Property<DateTime>("ApplicationDate")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("application_date");
+
+                    b.Property<long?>("OfferId")
+                        .IsRequired()
+                        .HasColumnType("bigint")
+                        .HasColumnName("offer_id");
+
+                    b.Property<long?>("UserId")
+                        .IsRequired()
+                        .HasColumnType("bigint")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_job_applications");
+
+                    b.HasIndex("OfferId")
+                        .HasDatabaseName("i_x_job_applications_offer_id");
+
+                    b.HasIndex("UserId", "OfferId")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_job_applications_user_id_offer_id");
+
+                    b.ToTable("job_applications", (string)null);
                 });
 
             modelBuilder.Entity("WAW.API.Job.Domain.Models.Offer", b =>
@@ -502,24 +548,28 @@ namespace WAW.API.Migrations
                         .HasColumnType("bigint")
                         .HasColumnName("id");
 
-                    b.Property<long>("ItProfessionalId")
+                    b.Property<long?>("OfferId")
+                        .IsRequired()
                         .HasColumnType("bigint")
-                        .HasColumnName("it_professional_id");
+                        .HasColumnName("offer_id");
 
-                    b.Property<long>("JobOfferId")
+                    b.Property<double>("Score")
+                        .HasColumnType("double")
+                        .HasColumnName("score");
+
+                    b.Property<long?>("UserId")
+                        .IsRequired()
                         .HasColumnType("bigint")
-                        .HasColumnName("job_offer_id");
+                        .HasColumnName("user_id");
 
                     b.HasKey("Id")
                         .HasName("p_k_job_post_scores");
 
-                    b.HasIndex("ItProfessionalId")
-                        .IsUnique()
-                        .HasDatabaseName("i_x_job_post_scores_it_professional_id");
+                    b.HasIndex("OfferId")
+                        .HasDatabaseName("i_x_job_post_scores_offer_id");
 
-                    b.HasIndex("JobOfferId")
-                        .IsUnique()
-                        .HasDatabaseName("i_x_job_post_scores_job_offer_id");
+                    b.HasIndex("UserId")
+                        .HasDatabaseName("i_x_job_post_scores_user_id");
 
                     b.ToTable("job_post_scores", (string)null);
                 });
@@ -656,10 +706,6 @@ namespace WAW.API.Migrations
                         .HasColumnType("varchar(100)")
                         .HasColumnName("name_plan");
 
-                    b.Property<int>("SubscriptionType")
-                        .HasColumnType("int")
-                        .HasColumnName("subscription_type");
-
                     b.HasKey("Id")
                         .HasName("p_k_subscriptions");
 
@@ -690,6 +736,11 @@ namespace WAW.API.Migrations
                         .HasForeignKey("WAW.API.Auth.Domain.Models.User", "CoverId")
                         .HasConstraintName("f_k_users_images_cover_id");
 
+                    b.HasOne("WAW.API.Cvs.Domain.Models.Cv", "Cv")
+                        .WithOne()
+                        .HasForeignKey("WAW.API.Auth.Domain.Models.User", "CvId")
+                        .HasConstraintName("f_k_users__cvs_cv_id");
+
                     b.HasOne("WAW.API.Auth.Domain.Models.ExternalImage", "Picture")
                         .WithOne()
                         .HasForeignKey("WAW.API.Auth.Domain.Models.User", "PictureId")
@@ -698,11 +749,11 @@ namespace WAW.API.Migrations
                     b.HasOne("WAW.API.Shared.Domain.Model.Ubigeo", "Ubigeo")
                         .WithOne()
                         .HasForeignKey("WAW.API.Auth.Domain.Models.User", "UbigeoId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired()
                         .HasConstraintName("f_k_users__ubigeos_ubigeo_id");
 
                     b.Navigation("Cover");
+
+                    b.Navigation("Cv");
 
                     b.Navigation("Picture");
 
@@ -815,25 +866,46 @@ namespace WAW.API.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("WAW.API.Job.Domain.Models.JobApplication", b =>
+                {
+                    b.HasOne("WAW.API.Job.Domain.Models.Offer", "Offer")
+                        .WithMany("JobApplications")
+                        .HasForeignKey("OfferId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_job_applications__offers_offer_id");
+
+                    b.HasOne("WAW.API.Auth.Domain.Models.User", "User")
+                        .WithMany("JobApplications")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_job_applications_users_user_id");
+
+                    b.Navigation("Offer");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("WAW.API.JobPostScores.Domain.Models.JobPostScore", b =>
                 {
-                    b.HasOne("WAW.API.ItProfessionals.Domain.Models.ItProfessional", "ItProfessional")
-                        .WithOne()
-                        .HasForeignKey("WAW.API.JobPostScores.Domain.Models.JobPostScore", "ItProfessionalId")
+                    b.HasOne("WAW.API.Job.Domain.Models.Offer", "Offer")
+                        .WithMany("JobPostScores")
+                        .HasForeignKey("OfferId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("f_k_job_post_scores_it_professionals_it_professional_id");
+                        .HasConstraintName("f_k_job_post_scores_offers_offer_id");
 
-                    b.HasOne("WAW.API.Job.Domain.Models.Offer", "JobOffer")
-                        .WithOne()
-                        .HasForeignKey("WAW.API.JobPostScores.Domain.Models.JobPostScore", "JobOfferId")
+                    b.HasOne("WAW.API.Auth.Domain.Models.User", "User")
+                        .WithMany("JobPostScores")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("f_k_job_post_scores_offers_job_offer_id");
+                        .HasConstraintName("f_k_job_post_scores_users_user_id");
 
-                    b.Navigation("ItProfessional");
+                    b.Navigation("Offer");
 
-                    b.Navigation("JobOffer");
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("WAW.API.Recruiters.Domain.Models.Recruiter", b =>
@@ -884,6 +956,10 @@ namespace WAW.API.Migrations
 
                     b.Navigation("Experience");
 
+                    b.Navigation("JobApplications");
+
+                    b.Navigation("JobPostScores");
+
                     b.Navigation("PlanSubscriptions");
 
                     b.Navigation("Projects");
@@ -892,6 +968,13 @@ namespace WAW.API.Migrations
             modelBuilder.Entity("WAW.API.Chat.Domain.Models.ChatRoom", b =>
                 {
                     b.Navigation("Messages");
+                });
+
+            modelBuilder.Entity("WAW.API.Job.Domain.Models.Offer", b =>
+                {
+                    b.Navigation("JobApplications");
+
+                    b.Navigation("JobPostScores");
                 });
 
             modelBuilder.Entity("WAW.API.Subscriptions.Domain.Models.Subscription", b =>

@@ -1,14 +1,18 @@
-﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace WAW.API.JobPostScores.Resources;
 
 public class JobPostScoreRequest {
-  [SwaggerSchema("JobPostScore job offer id", Nullable = false)]
+  [SwaggerSchema("JobPostScore User id", Nullable = false)]
   [Required]
-  public long JobOfferId { get; set; }
+  public long? UserId { get; set; }
 
-  [SwaggerSchema("JobPostScore it professional id", Nullable = false)]
+  [SwaggerSchema("JobPostScore it Offer id", Nullable = false)]
   [Required]
-  public long ItProfessionalId { get; set; }
+  public long? OfferId { get; set; }
+  
+  [SwaggerSchema("JobPostScore score", Nullable = false)]
+  [Required]
+  public double Score { get; set; }
 }

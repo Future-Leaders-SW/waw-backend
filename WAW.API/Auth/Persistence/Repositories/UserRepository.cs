@@ -48,6 +48,8 @@ public class UserRepository : BaseRepository, IUserRepository {
     return await context.Users.Where(u => u.Id == id)
       .Include(u => u.Cover)
       .Include(u => u.Picture)
+      .Include(u=> u.Ubigeo)
+      .Include(u => u.Cv)
       .FirstOrDefaultAsync();
   }
 
@@ -55,6 +57,8 @@ public class UserRepository : BaseRepository, IUserRepository {
     return await context.Users.Where(u => u.Email == email)
       .Include(u => u.Cover)
       .Include(u => u.Picture)
+      .Include(u => u.Ubigeo)
+      .Include(u => u.Cv)
       .FirstOrDefaultAsync();
   }
 

@@ -45,6 +45,7 @@ public class CvService : ICvService {
 
     current.Title = cv.Title;
     current.Data = cv.Data;
+    current.Extract = cv.Extract;
 
     try {
       repository.Update(current);
@@ -67,5 +68,11 @@ public class CvService : ICvService {
     } catch (Exception e) {
       return new CvResponse($"An error occurred while deleting the cv: {e.Message}");
     }
+  }
+  
+  //GetExtractByCvId
+  public async Task<string> GetExtractByCvId(long cvId) {
+    var cv = await repository.FindById(cvId);
+    return cv.Extract;
   }
 }
