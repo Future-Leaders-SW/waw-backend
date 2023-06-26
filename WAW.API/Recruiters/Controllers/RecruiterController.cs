@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Net.Mime;
@@ -24,7 +24,7 @@ public class RecruiterController : ControllerBase{
     this.service = service;
     this.mapper = mapper;
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpGet]
   [ProducesResponseType(typeof(IEnumerable<RecruiterResource>), 200)]
   [SwaggerResponse(200, "All the stored recruiters were retrieved successfully.", typeof(IEnumerable<RecruiterResource>))]
@@ -32,7 +32,7 @@ public class RecruiterController : ControllerBase{
     var recruiters = await service.ListAll();
     return mapper.Map<IEnumerable<Recruiter>, IEnumerable<RecruiterResource>>(recruiters);
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpPost]
   [ProducesResponseType(typeof(RecruiterResource), 200)]
   [ProducesResponseType(typeof(List<string>), 400)]
@@ -47,7 +47,7 @@ public class RecruiterController : ControllerBase{
     var result = await service.Create(recruiter);
     return result.ToResponse<RecruiterResource>(this, mapper);
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpPut("{id:int}")]
   [ProducesResponseType(typeof(RecruiterResource), 200)]
   [ProducesResponseType(typeof(List<string>), 400)]
@@ -65,7 +65,7 @@ public class RecruiterController : ControllerBase{
     var result = await service.Update(id, recruiter);
     return result.ToResponse<RecruiterResource>(this, mapper);
   }
-
+  [ApiExplorerSettings(IgnoreApi = true)]
   [HttpDelete("{id:int}")]
   [ProducesResponseType(typeof(NoContentResult), 204)]
   [ProducesResponseType(typeof(List<string>), 400)]
