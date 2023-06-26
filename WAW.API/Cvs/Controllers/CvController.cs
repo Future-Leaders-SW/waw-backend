@@ -56,7 +56,7 @@ public class CvController : ControllerBase {
     }
     return File(cv.Data, "application/pdf", cv.Title);
   }
-
+  [AllowAnonymous]
   [HttpPost]
   [ProducesResponseType(typeof(CvResource), 200)]
   [ProducesResponseType(typeof(List<string>), 400)]
