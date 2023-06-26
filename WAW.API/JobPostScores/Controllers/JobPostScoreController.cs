@@ -75,28 +75,25 @@ public class JobPostScoreController : ControllerBase{
         {
           var offerDescription = offer.Description;
 
-          // Prepare JSON payload
+           
           var jsonPayload = JsonConvert.SerializeObject(new
           {
             perfil_profesional = extract,
             oferta_laboral = offerDescription
           });
           
-          Console.WriteLine("GAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-          Console.WriteLine(jsonPayload);
-
-          // Send HTTP POST request
+            
           var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
           var response = await httpClient.PostAsync(apiUrl, content);
          
-          // Parse response JSON to get the score
+           
           var responseJson = await response.Content.ReadAsStringAsync();
           
           var responseObj = JsonConvert.DeserializeObject<dynamic>(responseJson);
           
           double score = responseObj.score;
 
-          // Use the score received from the NLP service
+           
           var jobPostScore = new JobPostScoreRequest();
           jobPostScore.UserId = userId;
           jobPostScore.OfferId = offer.Id;
